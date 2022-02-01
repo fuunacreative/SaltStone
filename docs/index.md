@@ -8,7 +8,7 @@ SaltStoneの紹介です
 <ul>
   {% for post in site.posts %}
     <li>
-      <span><b>{{ post.title }}</b><span><span>{{ post.excerpt }}</span>
+      <span><b>{{ post.title }}</b></span><span>{{ post.excerpt }}</span>
     </li>
   {% endfor %}
 </ul>
