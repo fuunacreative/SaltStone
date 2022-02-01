@@ -1,10 +1,16 @@
 ---
 layout: post
-title:  "おーよーポストだぜー３"
+title:  "Setupについて"
 date:   2022-02-02 02:50:52 +0900
 categories: developmemo
 ---
 
-これはどうやって表示されるの？
-
-
+ゆっくり動画を作るには現状はYMM4やYMM3、Aviutl+pluginなどの方法があります。
+Aviutlを使う場合にはpluginのインストールなど、
+環境をセットアップする必要があります。
+また、キャラ素材をダウンロードしたり、
+動画に声入れするためのボイスソフトを入れる必要があります。
+これらを一括して行うようなEXEを作り始めました
+興味がある方は是非、いいね、コメントをしてください！
+https://www.nicovideo.jp/watch/sm39972081
+https://www.youtube.com/watch?v=VJKXGfrlG8s
