@@ -1,4 +1,6 @@
-## Welcome to GitHub Pages
+## SaltStone
+
+ゆっくり動画　作成支援ツール
 
 You can use the [editor on GitHub](https://github.com/fuunacreative/SaltStone/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
