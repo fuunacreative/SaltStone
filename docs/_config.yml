@@ -21,9 +21,12 @@
 title: SaltStone ゆっくり動画 作成支援ツール
 # email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-  ゆっくり動画 作成支援ツール (Aviutlへの字幕・立ち絵展開ツール）
-  https://www.nicovideo.jp/watch/sm39972081
-  https://www.youtube.com/watch?v=VJKXGfrlG8s
+  <div>ゆっくり動画 作成支援ツール (Aviutlへの字幕・立ち絵展開ツール）</div>
+  <div>
+    <div>紹介動画</div>
+    <div><a href="https://www.nicovideo.jp/watch/sm39972081">ニコニコ</a></div>
+    <div><a href="https://www.youtube.com/watch?v=VJKXGfrlG8s">YouTube</a></div>
+  </div>
 baseurl: "/docs" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
