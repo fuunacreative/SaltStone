@@ -12,5 +12,3 @@ Aviutlを使う場合にはpluginのインストールなど、
 動画に声入れするためのボイスソフトを入れる必要があります。
 これらを一括して行うようなEXEを作り始めました
 興味がある方は是非、いいね、コメントをしてください！
-https://www.nicovideo.jp/watch/sm39972081
-https://www.youtube.com/watch?v=VJKXGfrlG8s
