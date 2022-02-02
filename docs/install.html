@@ -15,61 +15,69 @@
   <body>
   <h1>インストールプログラム</h1>
   <table class="pg">
-    <tr>
-      <th>プログラム名</th>
-      <th>URL</th>
-      <th>downloadURL</th>
-      <th class="nodisp">xpath</th>
-    </tr>
-    <tr class="aviutl"><td>aviutl 1.10</td>
-      <td>http://spring-fragrance.mints.ne.jp/aviutl/</td>
-      <td></td>
-      <td class="xpath nodisp">//a[contains(@href , '')]</td>
-    </tr>
-    <tr class="exedit">
-      <td>拡張編集 0.92</td>
-      <td>http://spring-fragrance.mints.ne.jp/aviutl/</td>
-      <td></td>
-      <td class="xpath nodisp">//a[contains(@href , '')]</td>
-    </tr>
-    <tr class="psdtoolkit">
-      <td>PSDToolKit</td>
-      <td>https://github.com/oov/aviutl_psdtoolkit</td>
-      <td>https://github.com/oov/aviutl_psdtoolkit/releases</td>
-      <td class="xpath nodisp">//a[contains(@href ,'v0.2beta56')]</td>
-    </tr>
-    <tr class="lsmashworks">
-      <td>L-SMASH Works</td>
-      <td>https://pop.4-bit.jp/?page_id=7929</td>
-      <td></td>
-      <td class="xpath nodisp">//a[contains(@href ,'r940_plugins.zip')]</td>
-    </tr>
-    <tr class="mp4out">
-      <td>かんたんMP4出力</td>
-      <td>http://aoytsk.blog.jp/aviutl/34586383.html</td>
-      <td></td>
-      <td class="xpath nodisp">//a[contains(@href ,'r940_plugins.zip')]</td>
-    </tr>
+    <thead>
+      <tr>
+        <th>プログラム名</th>
+        <th>URL</th>
+        <th>downloadURL</th>
+        <th class="nodisp">xpath</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="aviutl"><td>aviutl 1.10</td>
+        <td>http://spring-fragrance.mints.ne.jp/aviutl/</td>
+        <td></td>
+        <td class="xpath nodisp">//a[contains(@href , '')]</td>
+      </tr>
+      <tr class="exedit">
+        <td>拡張編集 0.92</td>
+        <td>http://spring-fragrance.mints.ne.jp/aviutl/</td>
+        <td></td>
+        <td class="xpath nodisp">//a[contains(@href , '')]</td>
+      </tr>
+      <tr class="psdtoolkit">
+        <td>PSDToolKit</td>
+        <td>https://github.com/oov/aviutl_psdtoolkit</td>
+        <td>https://github.com/oov/aviutl_psdtoolkit/releases</td>
+        <td class="xpath nodisp">//a[contains(@href ,'v0.2beta56')]</td>
+      </tr>
+      <tr class="lsmashworks">
+        <td>L-SMASH Works</td>
+        <td>https://pop.4-bit.jp/?page_id=7929</td>
+        <td></td>
+        <td class="xpath nodisp">//a[contains(@href ,'r940_plugins.zip')]</td>
+      </tr>
+      <tr class="mp4out">
+        <td>かんたんMP4出力</td>
+        <td>http://aoytsk.blog.jp/aviutl/34586383.html</td>
+        <td></td>
+        <td class="xpath nodisp">//a[contains(@href ,'r940_plugins.zip')]</td>
+      </tr>
+    </tbody>
   </table>
   <hr>
   <h1>キャラ素材</h1>
-  <table>
-    <tr>
-      <th>キャラ素材</th>
-      <th>素材形式</th>
-      <th>URL</th>
-    </tr>
-    <tr>
-      <!-- dir形式の立ち絵はnicotalkで大抵入手できる -->
-      <!-- psd形式は？ -->
-      <td>nicotalk＆キャラ素材</td>
-      <td>dir?</td>
-      <td>http://www.nicotalk.com/charasozai.html</td>
-      <!-- キャラ素材は使用するものをダウンロードさせる -->
-      <!-- ダウンロードフォルダを監視し、ダウンロードしたものをtempに展開する -->
-      <!-- ダウンロードlinkを drag drop できるといいんだけど、それは無理そう -->
-      <!-- imgを使っているリンクだとbmpがdrop dataになってしまう -->
-    </tr>
+  <table class="chara">
+    <thead>
+      <tr>
+        <th>キャラ素材</th>
+        <th>素材形式</th>
+        <th>URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <!-- dir形式の立ち絵はnicotalkで大抵入手できる -->
+        <!-- psd形式は？ -->
+        <td>nicotalk＆キャラ素材</td>
+        <td>dir?</td>
+        <td>http://www.nicotalk.com/charasozai.html</td>
+        <!-- キャラ素材は使用するものをダウンロードさせる -->
+        <!-- ダウンロードフォルダを監視し、ダウンロードしたものをtempに展開する -->
+        <!-- ダウンロードlinkを drag drop できるといいんだけど、それは無理そう -->
+        <!-- imgを使っているリンクだとbmpがdrop dataになってしまう -->
+      </tr>
+    </tbody>
   </table>
   <hr>
   <h1>ボイスソフト</h1>
