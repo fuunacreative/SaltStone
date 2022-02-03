@@ -103,17 +103,20 @@
   <h1>ボイスソフト</h1>
   <table class="voice">
     <thead>
-    <tr>
+      <tr>
+        <th>ID</th>
       <th>ソフト名</th>
       <th>対応ボイス</th>
       <th>URL</th>
       <th>downloadURL</th>
-      <th class="nodisp">xpath</th>
-      <th>setup方法</th>
+      <th class="">xpath</th>
+        <th>setup方法</th>
+
     </tr>
     </thead>
     <tbody>
       <tr class="bouyomi">
+        <td>Bouyomi</td>
         <td>棒読みちゃん</td>
         <td>AquesTalk1</td>
 	      <td>https://chi.usamimi.info/Program/Application/BouyomiChan/</td>
@@ -123,14 +126,17 @@
         <td>filecopy</td>
       </tr>
       <tr>
+        <td>Bouyomi_plugin</td>
         <td>棒読みちゃん wav and txt</td>
         <td></td>
         <td>https://github.com/yukimaru73/Plugin_Bouyomichan_wav_and_txt</td>
         <td>https://github.com/yukimaru73/Plugin_Bouyomichan_wav_and_txt/releases/download/0.1/Plugin_Bouyomichan_wav_and_txt.dll</td>
         <td>direct</td> <!-- xpath -->
-        <td>filecopy</td> <!-- setup方法 -->
+        <td>filecopy,ID=Bouyomi</td> <!-- setup方法 -->
+        <!-- ID bouyomiの展開フォルダにコピー -->
       </tr>
       <tr>
+        <td>SofTalk</td>
         <td>SofTalk</td>
         <td>AquesTalk1,AquesTalk2</td>
         <td>https://www.vector.co.jp/soft/winnt/art/se412443.html</td>
@@ -138,6 +144,7 @@
         <td></td>
       </tr>
       <tr>
+        <td>SofTalk</td>
         <td>VOICEROID</td>
         <td>無印,+,EX,2 (紲星あかり、結月ゆかり)</td>
         <td></td> <!-- url -->
@@ -145,6 +152,7 @@
         <td></td> <!-- setup方法 -->
       </tr>
       <tr>
+        <td>SofTalk</td>
         <td>CeVIO</td>
         <td>AI,CS7 (さとうささら、すずきつづみ、タカハシ)</td>
         <td></td> <!-- url -->
