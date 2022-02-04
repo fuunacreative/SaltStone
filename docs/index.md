@@ -6,6 +6,8 @@
 <p>SaltStoneの紹介です</p>
 <p>現在、鋭意作成中です！</p>
 
+<hr>
+<h3>開発ブログ</h3>
 <ul>
   {% for post in site.posts %}
     <li>
