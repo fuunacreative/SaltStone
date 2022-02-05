@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "前提ソフトについて"
-date:   2022-02-02 02:50:52 +0900
+date:   2022-02-06 05:05:00 +0900
 categories: developmemo
 ---
 
