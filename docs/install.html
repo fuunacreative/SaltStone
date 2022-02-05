@@ -24,6 +24,8 @@
         <th>files</th>
         <th>destdir</th>
         <th>openurl</th>
+        <th>version</th> <!-- guiに表示 -->
+        <th>exefile</th> <!-- ショートカット作成に使う -->
       </tr>
     </thead>
     <tbody>
@@ -35,6 +37,8 @@
         <td></td>
         <td>aviutl</td>
         <td></td>
+        <td>1.10</td>
+        <td>aviutl.exe</td>
       </tr>
       <tr class="exedit">
         <td>拡張編集 0.92</td>
@@ -44,6 +48,8 @@
         <td></td> <!-- files -->
         <td>aviutl</td>  <!-- destdir -->
         <td>false</td> <!-- openurl -->
+        <td>0.92</td> <!-- version -->
+        <td></td> <!-- exefile -->
       </tr>
       <tr class="psdtoolkit">
         <td>PSDToolKit</td>
@@ -53,6 +59,8 @@
         <td></td> <!-- files -->
         <td>aviutl</td>  <!-- destdir -->
         <td></td>
+        <td>v0.2beta56</td>
+        <td></td> <!-- exefile -->
       </tr>
       <tr class="lsmashworks">
         <td>L-SMASH Works</td>
@@ -62,6 +70,8 @@
         <td>lwinput.aui</td>
         <td>aviutl¥Plugins</td>
         <td></td>
+        <td>r940 release1</td>
+        <td></td> <!-- exefile -->
       </tr>
       <tr class="mp4out">
         <td>かんたんMP4出力</td>
@@ -71,6 +81,8 @@
         <td>easymp4v4.auo</td>
         <td>aviutl¥Plugins</td>
         <td></td>
+        <td>ver 0.1</td> <!-- version -->
+        <td></td> <!-- exefile -->
       </tr>
       <tr>
         <td>.NET Runtime</td>
@@ -83,6 +95,8 @@
         <td>exe,ndp48-x86-x64-allos-enu.exe,/norestart</td> <!-- destdir  -->
         <!-- /qをつけると裏で動作して何してるのかわからないのではずす -->
         <td>false</td> <!-- openurl falseだとurlを開かない -->
+        <td>Framework 4.8</td> <!-- version -->
+        <td></td> <!-- exefile -->
       </tr>
       <tr>
         <td>Visual C++ Runtime</td>
@@ -96,6 +110,8 @@
         <td></td> <!-- install file -->
         <td>exe,install_all.bat</td> <!-- destdir -->
         <td>false</td> <!-- openurl falseだとurlを開かない -->
+        <td>all c++ runtime</td> <!-- version -->
+        <td></td> <!-- exefile -->
       </tr>
     </tbody>
   </table>
@@ -135,7 +151,7 @@
       <th>URL</th>
       <th>downloadURL</th>
       <th class="">xpath</th>
-        <th>setup方法</th>
+      <th>setup方法</th>
 
     </tr>
     </thead>
@@ -159,8 +175,12 @@
         <td>https://github.com/yukimaru73/Plugin_Bouyomichan_wav_and_txt</td>
         <td>https://github.com/yukimaru73/Plugin_Bouyomichan_wav_and_txt/releases/download/0.1/Plugin_Bouyomichan_wav_and_txt.dll</td>
         <td>direct</td> <!-- xpath -->
-        <td>filecopy,ID=Bouyomi</td> <!-- setup方法 -->
+        <td>
+          filecopy,ID=Bouyomi
+          settingstring,{DEST}=%VOCEFOLDER%
+        </td> <!-- setup方法 -->
         <!-- ID bouyomiの展開フォルダにコピー -->
+        <!-- settingファイルの内の{DEST}を"voicefolder"に書き換えてコピー
       </tr>
       <tr>
         <td>false</td> <!-- install flag -->
