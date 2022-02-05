@@ -177,10 +177,10 @@
         <td>direct</td> <!-- xpath -->
         <td>
           filecopy,ID=Bouyomi
-          settingstring,{DEST}=%VOCEFOLDER%
+          replacestring,Plugin_Bouyomichan_wav_and_txt.setting,{DEST}=%VOCEFOLDER%
         </td> <!-- setup方法 -->
         <!-- ID bouyomiの展開フォルダにコピー -->
-        <!-- settingファイルの内の{DEST}を"voicefolder"に書き換えてコピー
+        <!-- settingファイルの内の{DEST}を"voicefolder"に書き換えてコピー -->
       </tr>
       <tr>
         <td>false</td> <!-- install flag -->
