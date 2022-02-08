@@ -9,15 +9,6 @@
 <p>SaltStoneの紹介です</p>
 <p>現在、鋭意作成中です！</p>
 
-<hr>
-<h3>開発ブログ</h3>
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <span><b>{{ post.title }}</b></span><span>{{ post.excerpt }}</span>
-    </li>
-  {% endfor %}
-</ul>
 
 <hr>
 <h3>共同開発 or ご寄付のお願い</h3>
@@ -37,3 +28,14 @@
 <h3>動作環境</h3>
 <p>Win7のみでの動作確認となります。</p>
 <p>Win8,10,11ではまだ未検証です</p>
+
+
+<hr>
+<h3>開発ブログ</h3>
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <span><b>{{ post.title }}</b></span><span>{{ post.excerpt }}</span>
+    </li>
+  {% endfor %}
+</ul>

@@ -27,14 +27,17 @@
   <table class="pg">
     <thead>
       <tr>
-        <th>プログラム名</th>
-        <th>URL</th>
-        <th>downloadURL</th>
+        <th>プログラム名</th> <!-- リストに表示するプログラム名 -->
+        <th>URL</th> <!-- 画面に表示するURL -->
+        <th>downloadURL</th> <!-- URLと違うところからdwする場合に設定 -->
         <th class="">xpath</th>
-        <th>files</th>
+        <!-- setup方法に xpath or exe or else -->
+        <th>files</th> <!-- 固定ファイルをコピーする場合 ファイル名 *を含む -->
         <th>destdir</th>
         <th>openurl</th>
         <th>version</th> <!-- guiに表示 -->
+        <!-- version管理して違うexeをdwするには？ -->
+        <!-- TODO json化する時に検討 -->
         <th>exefile</th> <!-- ショートカット作成に使う -->
       </tr>
     </thead>
@@ -79,6 +82,9 @@
         <td class="xpath"></td>
         <td>lwinput.aui</td>
         <td>aviutl¥Plugins</td>
+        <!-- aviutlが違う場所にインストールされた時に問題が発生する  -->
+        <!-- 本来であれば、aviutlのIDを参照してaviutlのdestirを取得するべき -->
+        <!-- とりあえず問題ない -->
         <td></td>
         <td>r940 release1</td>
         <td></td> <!-- exefile -->
@@ -117,11 +123,12 @@
           https://biblprog.com/en/visual-c++-redistributable-runtimes-all-in-one/
         </td>
         <td>
-          https://dl3.topfiles.net/files/2/1013/29281/a0JWT2eujCFEc0dJMU9vaUVxL3JXK3NwQUUyRmxyM2ZRaS9EcWtCZnB1d1NDTT06OvcDXWJVcp2e_sW6aQI7G4o/visual-c-redistributable-runtimes-all-in-one_Dec_2021.zip
-        </td>
+          <!--          https://dl3.topfiles.net/files/2/1013/29281/a0JWT2eujCFEc0dJMU9vaUVxL3JXK3NwQUUyRmxyM2ZRaS9EcWtCZnB1d1NDTT06OvcDXWJVcp2e_sW6aQI7G4o/visual-c-redistributable-runtimes-all-in-one_Dec_2021.zip -->
+          https://fuunacreative.github.io/SaltStone/install_c++.json
+        </td> <!-- download url -->
         <td class="xpath"></td>
         <td></td> <!-- install file -->
-        <td>exe,install_all.bat</td> <!-- destdir -->
+        <td>json,</td> <!-- destdir -->
         <td>false</td> <!-- openurl falseだとurlを開かない -->
         <td>all c++ runtime</td> <!-- version -->
         <td></td> <!-- exefile -->
