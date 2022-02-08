@@ -1,5 +1,8 @@
 ## SaltStone
 
+<!-- https://fuunacreative.github.io/SaltStone/ -->
+
+
 ゆっくり動画 作成支援ツール
 
 <hr>
@@ -19,7 +22,7 @@
 <hr>
 <h3>共同開発 or ご寄付のお願い</h3>
 <p>AquesTalkのライブラリを使用するため、SDKライセンスが必要になりそうです</p>
-<p><a href="https://a-quest.shop/?category_id=612f3dbc0f9a22719615d5f8">AquesTalk 開発ライセンス<a></p>
+<p><a href="https://a-quest.shop/?category_id=612f3dbc0f9a22719615d5f8">AquesTalk 開発ライセンス</a></p>
 <p>既にライセンスをお持ちの方で共同開発してもいいよというお考えのある方は是非、協業させてください</p>
 <p>VOICEROID、CeVIO、AITalkもボイスとして使えないか検証しています</p>
 <p>こちらもライセンスをお持ちの方で開発に協力していただける方は是非、ご連絡いただければと思います</p>
