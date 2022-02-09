@@ -14,7 +14,9 @@
 		"version": "2005_x64",
 		"intallflag": "true",
 		"memo": "",
-		"openurl": "false"
+		"openurl": "false",
+    "checkinstalled" : [
+    ]
 	}, {
 		"id": "VC++2005_x86",
 		"parentid": "VC++",
@@ -30,6 +32,8 @@
 		"version": "2005_x86",
 		"intallflag": "true",
 		"memo": "",
-		"openurl": "false"
+		"openurl": "false",
+    "checkinstalled" : [
+    ]
 	}]
 }
