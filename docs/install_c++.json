@@ -8,9 +8,7 @@
 		"downloadurl": "same",
 		"xpath": "direct",
 		"filename": "vcredist2005_x64.exe",
-		"setups": [{
-			"exe": "vcredist2005_x64.exe"
-		}],
+		"setups": ["exe","vcredist2005_x64.exe"],
 		"version": "2005_x64",
 		"intallflag": "true",
 		"memo": "",
