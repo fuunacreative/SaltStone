@@ -4,7 +4,7 @@
       "id" : "VC++2005_x64"
       "parentid":"VC++"
       "dispname":"VC++ Runtime 2005 x64"
-      "displayflag":"false"
+      "dispflag":"false"
       "url" :"https://www.googleapis.com/drive/v3/files/1Lt94-6ayAgLMibGHychRD0oNWfC3bA6_?alt=media&key=[googleapikey]"
       "downloadurl" : "same"
       "xpath" : "direct"
@@ -15,12 +15,13 @@
       "version" : "2005_x64"
       "intallflag" : "true"
       "memo":""
+      "openurl":"false"
     }
     {
       "id" : "VC++2005_x86"
       "parentid":"VC++"
       "dispname":"VC++ Runtime 2005 x86"
-      "displayflag":"false"
+      "dispflag":"false"
       "url" :"https://www.googleapis.com/drive/v3/files/1pdPI8k6Pw7DBe3XK1XgB_4E6pUTkPaW6?alt=media&key=[googleapikey]"
       "downloadurl" : "same"
       "xpath" : "direct"
@@ -31,6 +32,7 @@
       "version" : "2005_x86"
       "intallflag" : "true"
       "memo":""
+      "openurl":"false"
     }
   }
 }
