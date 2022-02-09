@@ -1,39 +1,124 @@
 {
 	"installer": [{
-		"id": "VC++2005_x64",
-		"parentid": "VC++",
-		"dispname": "VC++ Runtime 2005 x64",
-		"dispflag": "false",
-		"url": "https://www.googleapis.com/drive/v3/files/1Lt94-6ayAgLMibGHychRD0oNWfC3bA6_?alt=media&key=[googleapikey]",
-		"downloadurl": "same",
-		"xpath": "direct",
-		"filename": "vcredist2005_x64.exe",
-		"setups": [
-      {"cmd":"exe","file":"vcredist2005_x64.exe"}
-    ],
-		"version": "2005_x64",
-		"intallflag": "true",
-		"memo": "",
-		"openurl": "false",
-    "checkinstalled" : [
-    ]
-	}, {
-		"id": "VC++2005_x86",
-		"parentid": "VC++",
-		"dispname": "VC++ Runtime 2005 x86",
-		"dispflag": "false",
-		"url": "https://www.googleapis.com/drive/v3/files/1pdPI8k6Pw7DBe3XK1XgB_4E6pUTkPaW6?alt=media&key=[googleapikey]",
-		"downloadurl": "same",
-		"xpath": "direct",
-		"filename": "vcredist2005_x86.exe",
-		"setups": [
-      {"cmd":"exe","file":"vcredist2005_x86.exe"}
-		],
-		"version": "2005_x86",
-		"intallflag": "true",
-		"memo": "",
-		"openurl": "false",
-    "checkinstalled" : [
-    ]
-	}]
+			"id": "VC++2005_x86",
+			"parentid": "VC++",
+			"dispname": "VC++ Runtime 2005 x86",
+			"dispflag": "false",
+			"url": "https://www.googleapis.com/drive/v3/files/1pdPI8k6Pw7DBe3XK1XgB_4E6pUTkPaW6?alt=media&key=[googleapikey]",
+			"downloadurl": "same",
+			"xpath": "direct",
+			"filename": "vcredist2005_x86.exe",
+			"destdir": "",
+			"setups": [{
+				"cmd": "exe",
+				"file": "vcredist2005_x86.exe"
+			}],
+			"version": "2005_x86",
+			"intallflag": "true",
+			"memo": "",
+			"openurl": "false",
+			"checkinstalled": []
+		},
+		{
+			"id": "VC++2005_x64",
+			"parentid": "VC++",
+			"dispname": "VC++ Runtime 2005 x64",
+			"dispflag": "false",
+			"url": "https://www.googleapis.com/drive/v3/files/1Lt94-6ayAgLMibGHychRD0oNWfC3bA6_?alt=media&key=[googleapikey]",
+			"downloadurl": "same",
+			"xpath": "direct",
+			"filename": "vcredist2005_x64.exe",
+			"destdir": "",
+			"setups": [{
+				"cmd": "exe",
+				"file": "vcredist2005_x64.exe"
+			}],
+			"version": "2005_x64",
+			"intallflag": "true",
+			"memo": "",
+			"openurl": "false",
+			"checkinstalled": [],
+			"createshortcut": ""
+		},
+		{
+			"id": "VC++2008_x86",
+			"parentid": "VC++",
+			"dispname": "VC++ Runtime 2008 x86",
+			"dispflag": "false",
+			"url": "https://www.googleapis.com/drive/v3/files/10cOV0FZ-ir_2w9_t5Uaqk68eH_ffcsC5?alt=media&key=[googleapikey]",
+			"downloadurl": "same",
+			"xpath": "direct",
+			"filename": "vcredist2008_x86.exe",
+			"destdir": "",
+			"setups": [{
+				"cmd": "exe",
+				"file": "vcredist2008_x86.exe"
+			}],
+			"version": "2008_x86",
+			"intallflag": "true",
+			"memo": "",
+			"openurl": "false",
+			"checkinstalled": []
+		},
+		{
+			"id": "VC++2008_x64",
+			"parentid": "VC++",
+			"dispname": "VC++ Runtime 2008 x64",
+			"dispflag": "false",
+			"url": "https://www.googleapis.com/drive/v3/files/1TIOSwqaWYHCXNf0jkgCN8IFHRmiZT099?alt=media&key=[googleapikey]",
+			"downloadurl": "same",
+			"xpath": "direct",
+			"filename": "vcredist2008_x64.exe",
+			"destdir": "",
+			"setups": [{
+				"cmd": "exe",
+				"file": "vcredist2008_x64.exe"
+			}],
+			"version": "2008_x64",
+			"intallflag": "true",
+			"memo": "",
+			"openurl": "false",
+			"checkinstalled": []
+		},
+		{
+			"id": "VC++2010_x86",
+			"parentid": "VC++",
+			"dispname": "VC++ Runtime 2010 x86",
+			"dispflag": "false",
+			"url": "https://www.googleapis.com/drive/v3/files/1v6TuREKUEfNqhDrjOMJln9PQOEAqBUoG?alt=media&key=[googleapikey]",
+			"downloadurl": "same",
+			"xpath": "direct",
+			"filename": "vcredist2010_x86.exe",
+			"destdir": "",
+			"setups": [{
+				"cmd": "exe",
+				"file": "vcredist2010_x86.exe"
+			}],
+			"version": "2010_x86",
+			"intallflag": "true",
+			"memo": "",
+			"openurl": "false",
+			"checkinstalled": []
+		},
+		{
+			"id": "VC++2010_x64",
+			"parentid": "VC++",
+			"dispname": "VC++ Runtime 2010 x64",
+			"dispflag": "false",
+			"url": "https://www.googleapis.com/drive/v3/files/1dRlyGoZbd2j-iFUTQa_ErgkQmiaj0mOB?alt=media&key=[googleapikey]",
+			"downloadurl": "same",
+			"xpath": "direct",
+			"filename": "vcredist2010_x64.exe",
+			"destdir": "",
+			"setups": [{
+				"cmd": "exe",
+				"file": "vcredist2010_x64.exe"
+			}],
+			"version": "2010_x64",
+			"intallflag": "true",
+			"memo": "",
+			"openurl": "false",
+			"checkinstalled": []
+		}
+	]
 }
