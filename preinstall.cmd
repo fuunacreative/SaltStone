@@ -10,16 +10,26 @@ GOTO :EOF
 
   <job id="yrdy">
     <script language="JScript">
+       // ver 1.0
        var url = "//download.visualstudio.microsoft.com/download/pr/2d6bb6b2-226a-4baa-bdec-798822606ff1/9b7b8746971ed51a1770ae4293618187/ndp48-web.exe";
        var file = "ndp48-web";
 
        var shell = new ActiveXObject("WScript.Shell");
-       var homed = shell.SpecialFolders("Desktop");
-       WScript.Echo("User-specific PATH Environment Variable");
-       homed = homed.replace('Desktop','');
-       WScript.Echo("current directory = " + homed);
+       // timeout sec
+       // arg2 okcancel=1
+       // arg3 icon 32=question
+       var ret = shell.Popup("URL:" + url + "\r\nダウンロードして実行しますか？",10,"処理確認",33);
+       if ( ret == 2)
+         retrun
+
+
+       // var homed = shell.SpecialFolders("Desktop");
+       // WScript.Echo("User-specific PATH Environment Variable");
+       // homed = homed.replace('Desktop','');
+       // WScript.Echo("current directory = " + homed);
        var request = WScript.CreateObject('MSXML2.XMLHTTP.6.0');
 
+       WScript.Echo("URL:" + url);
        request.open('GET', "https:" + url, false); // not async
        request.send();
        if (request.status !== 200) {
