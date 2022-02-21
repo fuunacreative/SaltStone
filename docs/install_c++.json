@@ -19,6 +19,13 @@
 			"openurl": "false",
 			"checkinstalled": [{
 				"regexist": "HKLM\\SOFTWARE\\Classes\\Installer\\Products\\c1c4f01781cc94c4c8fb1542c0981a2a"
+			}, {
+				"memo": "regexist,regvalue,fileexist"
+			}],
+			"checkversion": [{
+				"regkey": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Installer\\Products\\c1c4f01781cc94c4c8fb1542c0981a2a",
+				"value": "Version",
+				"decode": "C++Custom"
 			}]
 		},
 		{
