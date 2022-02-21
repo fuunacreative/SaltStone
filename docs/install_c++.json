@@ -17,9 +17,9 @@
 			"intallflag": "true",
 			"memo": "",
 			"openurl": "false",
-		"checkinstalled": [
-      {"regexist":"HKLM\SOFTWARE\Classes\Installer\Products\c1c4f01781cc94c4c8fb1542c0981a2a"}
-    ]
+			"checkinstalled": [{
+				"regexist": "HKLM\\SOFTWARE\\Classes\\Installer\\Products\\c1c4f01781cc94c4c8fb1542c0981a2a"
+			}]
 		},
 		{
 			"id": "VC++2005_x64",
