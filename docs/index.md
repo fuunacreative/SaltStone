@@ -11,7 +11,7 @@
 
 
 <hr>
-<h3>共同開発 or ご寄付のお願い</h3>
+<h3 id="donation">共同開発 or ご寄付のお願い</h3>
 <p>AquesTalkのライブラリを使用するため、SDKライセンスが必要になりそうです</p>
 <p><a href="https://a-quest.shop/?category_id=612f3dbc0f9a22719615d5f8">AquesTalk 開発ライセンス</a></p>
 <p>既にライセンスをお持ちの方で共同開発してもいいよというお考えのある方は是非、協業させてください</p>
@@ -32,7 +32,7 @@
 
 
 <hr>
-<h3>開発ブログ</h3>
+<h3 id="blog">開発ブログ</h3>
 <ul>
   {% for post in site.posts %}
     <li>
