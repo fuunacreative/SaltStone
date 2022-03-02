@@ -12,7 +12,7 @@ categories: developmemo
 <p>Win8.1,10,11で動画書き出しまでチェックしました</p>
 <p>棒読みちゃんはwin8以降では動作しない時があるようです</p>
 <p>MITライセンスを継承したドネーションウェアです</p>
-<p>要約すると、無償提供＋無保証です</p>
+<p>要約すると、無償提供＋無保証で出来れば寄付してねです</p>
 <p>
 <a href="https://www.nicovideo.jp/watch/sm40046724">ニコニコ</a>
 <a href="https://www.youtube.com/watch?v=SSJyAIzB5Gk">youtube</a>
