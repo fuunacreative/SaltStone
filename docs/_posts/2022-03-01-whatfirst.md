@@ -5,9 +5,6 @@ date:   2022-03-01 4:09:00 +0900
 categories: developmemo
 ---
 
-<!-- https://fuunacreative.github.io/SaltStone/ -->
-<h4>2022/3/1</h4>
-
 <p>何をしてやるべきか、とても悩みます</p>
 <p>PGを構成するライブラリ？デモ？とりあえず動くもの？</p>
 <p>PSD・キャラ素材スクリプト両方対応を目指すので設計も難しい</p>

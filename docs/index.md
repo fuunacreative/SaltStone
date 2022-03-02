@@ -38,7 +38,7 @@
     <li>
       <span><b>{{ post.title }}</b></span>
       <span>{{ post.date | date: "%Y/%m/%d" }}</span>
-      <span>{{ post.excerpt }}</span>
+      <div>{{ post.excerpt }}</div>
     </li>
   {% endfor %}
 </ul>
