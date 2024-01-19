@@ -1,0 +1,4 @@
+change log
+
+1. preinstallからsetupを実行するように変更
+1. .NET4.8 installedのチェックを追加

@@ -1,0 +1,7 @@
+LIBRARY imaging
+EXPORTS
+   getPctStartXY @1
+   getPctStartXY2 @2
+   clipping @3
+   composeOverlay @4
+   composeMultiply @5

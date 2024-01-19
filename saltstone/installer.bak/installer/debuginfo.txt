@@ -1,0 +1,19 @@
+エラーにより中断しました
+このファイル[C:\Users\yasuhiko\source\repos\saltstone\Debug\x64\debuginfo.txt]をfuunacreative@gmail.comに送付してください
+エラーが発生したよ！
+SaltstoneSetup
+   場所 saltstone.frmInstall.pf_install() 場所 C:\Users\yasuhiko\source\repos\saltstone\SaltstoneSetup\frmSetup.cs:行 392
+   場所 saltstone.frmInstall.cmdInstallAviutil_Click(Object sender, EventArgs e) 場所 C:\Users\yasuhiko\source\repos\saltstone\SaltstoneSetup\frmSetup.cs:行 377
+   場所 System.Windows.Forms.Control.OnClick(EventArgs e)
+   場所 System.Windows.Forms.Button.OnClick(EventArgs e)
+   場所 System.Windows.Forms.Button.OnMouseUp(MouseEventArgs mevent)
+   場所 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   場所 System.Windows.Forms.Control.WndProc(Message& m)
+   場所 System.Windows.Forms.ButtonBase.WndProc(Message& m)
+   場所 System.Windows.Forms.Button.WndProc(Message& m)
+   場所 System.Windows.Forms.NativeWindow.DebuggableCallback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+   場所 System.Windows.Forms.UnsafeNativeMethods.DispatchMessageW(MSG& msg)
+   場所 System.Windows.Forms.Application.ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(IntPtr dwComponentID, Int32 reason, Int32 pvLoopData)
+   場所 System.Windows.Forms.Application.ThreadContext.RunMessageLoopInner(Int32 reason, ApplicationContext context)
+   場所 System.Windows.Forms.Application.ThreadContext.RunMessageLoop(Int32 reason, ApplicationContext context)
+   場所 saltstone.Program.Main() 場所 C:\Users\yasuhiko\source\repos\saltstone\SaltstoneSetup\Program.cs:行 73

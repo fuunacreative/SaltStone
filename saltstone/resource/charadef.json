@@ -1,0 +1,53 @@
+{
+  "charadefines": [
+    {
+      "ID":"れいむ",
+      "icon":"http://fuunacreative/charadef/images/reimu.png",
+      "omit":"r",
+      "picture":"dir,れいむ",
+      "pictureurl":"http://www.nicotalk.com/charasozai_kt.html",
+      "picturecreater":"きつね",
+      "defaultpicture":"set:1",
+      "voicesoft":"AquesTalk",
+      "voicechara":"女性１",
+      "sampleplaytext":"れいむちゃんです。ゆっくりしていってね",
+      "tone":"100",
+      "speed":"110",
+      "volume":"100",
+      "addtionalvoiceparameter":""
+    },
+    {
+      "ID":"まりさ",
+      "icon":"http://fuunacreative/charadef/images/marisa.png",
+      "omit":"m",
+      "picture":"dir,まりさ",
+      "pictureurl":"http://www.nicotalk.com/charasozai_kt.html",
+      "picturecreater":"きつね",
+      "defaultpicture":"set:1",
+      "voicesoft":"AquesTalk",
+      "voicechara":"女性２",
+      "sampleplaytext":"まりさだぜ。ゆっくりしていってね",
+      "tone":"95",
+      "speed":"115",
+      "volume":"100",
+      "addtionalvoiceparameter":""
+    },
+    {
+      "ID":"ようむ",
+      "icon":"http://fuunacreative/charadef/images/youmu.png",
+      "omit":"r",
+      "picture":"dir,れいむ",
+      "pictureurl":"http://www.nicotalk.com/charasozai_kt.html",
+      "picturecreater":"きつね",
+      "defaultpicture":"set:1",
+      "voicesoft":"AquesTalk",
+      "voicechara":"女性１",
+      "sampleplaytext":"ようむだよ。ゆっくりしていってね",
+      "tone":"130",
+      "speed":"76",
+      "volume":"100",
+      "addtionalvoiceparameter":""
+    }
+    ]
+
+}

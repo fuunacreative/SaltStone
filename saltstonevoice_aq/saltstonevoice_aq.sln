@@ -1,0 +1,31 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "saltstonevoice_aq", "saltstonevoice_aq\saltstonevoice_aq.csproj", "{533D8A6F-4EE2-4581-BE92-55620DDE5308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "..\saltstone\Utils\Utils.csproj", "{8FB9A88F-F2E1-4D5C-8B90-D7F79A6CBA3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{533D8A6F-4EE2-4581-BE92-55620DDE5308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533D8A6F-4EE2-4581-BE92-55620DDE5308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533D8A6F-4EE2-4581-BE92-55620DDE5308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533D8A6F-4EE2-4581-BE92-55620DDE5308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FB9A88F-F2E1-4D5C-8B90-D7F79A6CBA3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FB9A88F-F2E1-4D5C-8B90-D7F79A6CBA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FB9A88F-F2E1-4D5C-8B90-D7F79A6CBA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FB9A88F-F2E1-4D5C-8B90-D7F79A6CBA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06A4B8A0-DE47-4016-A722-8D3009E9B031}
+	EndGlobalSection
+EndGlobal
