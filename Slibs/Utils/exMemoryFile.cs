@@ -25,10 +25,11 @@ namespace saltstone
 
     public exMemoryFile()
     {
+      _taskid = "";
     }
 
     [SupportedOSPlatform("windows")]
-    public exMemoryFile(string mmfkey = "", int size = MemoryFiles.DefaultSize)
+    public exMemoryFile(string mmfkey = "", int size = MemoryFiles.DefaultSize) : this()
     {
 
       base.init(mmfkey, size);
@@ -132,7 +133,7 @@ namespace saltstone
     {
       bool fret = false;
       bool ret;
-      obj = default(T);
+      obj = default;
       if (_mmf == null)
       {
         return false;

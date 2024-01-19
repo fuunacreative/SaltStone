@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -17,6 +18,14 @@ using System.Text.Json;
 logmanagerが起動しているかどうかをチェックするフラグをmemberとしてもつ
 logs class以外に、logmanagerを起動するクラスを持つ？
 いや、logsにもたせるべきか。 logs.startLogManager()などとする
+iniファイルの読み込みをここで行いたいな、、、
+いや、iniファイルの整理を行うべきだな log4netは開発終了している -> 設定ファイルの設計を行う
+exeini   , logini
+inifileをutilsへ移動
+グローバルini -> settings.ini
+exeini -> exename.ini
+保存はどうする？ iniファイルに保存する？ -> ok 問題なし
+最近のはやりはxmlファイルでsettingを書くこと -> xmlファイルは可読性がよくないので使わない
  */
 
 namespace saltstone
@@ -31,7 +40,15 @@ namespace saltstone
   public class Logs
   {
 
+    // logserverのprocess存在判定をおこなためのconst
+    // TODO iniファイルに記載したいが、globalsを含むとどうなるか？
+    // utilsは単体で動作させたいんだよなー
     public const string Const_LogserverExe = "logserver.exe";
+
+    /// <summary>
+    /// serializeをしてバイトでデータ送受信を行う際に使用する５バイトのheader 
+    /// </summary>
+    public const string Const_SerializeID = "LOG__";
 
     public enum Logtype
     {
@@ -50,24 +67,17 @@ namespace saltstone
     /// 直近のlogfileを保存しておく
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
-    public static string? logfile;
+    public static string logfile;
 
     [System.Text.Json.Serialization.JsonIgnore]
-    public static string? tracefile;
+    public static string tracefile;
 
     /// <summary>
     /// msgcontrolは必要なのか、、、
     /// 場合によるが、logsはutilsにあるので統一して出せるとpgしやすい
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
-    public static MsgControl? _msgconrol = null;
-
-    /// <summary>
-    /// named pipeで送信する場合のdatatype "log"固定 
-    /// 場合により、固定長で10バイトとする
-    /// TODO named pipe recieveでバイト数を指定しなくてもすべてのデータを読み込みできるのか？
-    /// </summary>
-    public string datatype;
+    public static MsgControl _msgconrol = null;
 
     /// <summary>
     /// readするバイト数とデータの種類（この場合はlog)を保存したいな、、、
@@ -131,9 +141,11 @@ namespace saltstone
       logtype = Logtype.info;
       logdate = Utils.getNowDatetime();
       exename = "";
-
-
-
+      exever = "";
+      message = "";
+      method = "";
+      sourcefile = "";
+      trace = "";
     }
 
     public Logs(Exception ex) : this()
@@ -171,7 +183,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
 
     public static bool startLogManger()
     {
-      // TODO logmanagerのexeを起動する
+      // TODO  logmanagerのexeを起動する
 
       return true;
     }

@@ -63,7 +63,7 @@ namespace saltstone
       bool fret = false;
 
       int maxpath = Utils.Files.MAX_PATH;
-      BinaryReader? bs = null;
+      BinaryReader bs = null;
       UnicodeEncoding encode = new UnicodeEncoding();
       byte[] buff = new byte[maxpath];
       string intext = "";

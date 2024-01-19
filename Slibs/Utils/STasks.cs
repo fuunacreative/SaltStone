@@ -18,18 +18,18 @@ namespace saltstone
   public static class STasks
   {
     // タスクの優先順位つき登録と実行を含む
-    private static SortedDictionary<int, Action>? _tasksall;
-    private static Dictionary<string,Task>? _tasks;
+    private static SortedDictionary<int, Action> _tasksall;
+    private static Dictionary<string,Task> _tasks;
     private static bool inited = false; // 初期化されたかどうかのフラグ
     private static string guid;
 
     // private static SMutex pMutexRunLock;
 
-    private static Dictionary<string, CancellationTokenSource>? _taskcancel;
+    private static Dictionary<string, CancellationTokenSource> _taskcancel;
 
     public delegate void del_tasks(CancellationToken ct);
 
-    private static SSemaphore? pRunLock;
+    private static SSemaphore pRunLock;
 
     public static void init()
     {
