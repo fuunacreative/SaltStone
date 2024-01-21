@@ -28,6 +28,11 @@
   <ItemGroup>
     <ProjectReference Include="..\sqlite\sqlite.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="saltstone.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 // log4net
 // log rotationができるとよい
@@ -37,18 +38,20 @@ namespace saltstone
   /// </summary>
   /// 
   [Serializable()]
-  public class Logs
+  public class Logs : SNamedpipe_data
   {
 
-    // logserverのprocess存在判定をおこなためのconst
-    // TODO iniファイルに記載したいが、globalsを含むとどうなるか？
-    // utilsは単体で動作させたいんだよなー
-    public const string Const_LogserverExe = "logserver.exe";
 
     /// <summary>
     /// serializeをしてバイトでデータ送受信を行う際に使用する５バイトのheader 
     /// </summary>
     public const string Const_SerializeID = "LOG__";
+    // logserverのprocess存在判定をおこなためのconst
+    // TODO iniファイルに記載したいが、globalsを含むとどうなるか？
+    // utilsは単体で動作させたいんだよなー
+    // [System.Text.Json.Serialization.JsonIgnore]
+    // private const string Const_LogserverExe = "logserver.exe";
+
 
     public enum Logtype
     {
@@ -62,7 +65,7 @@ namespace saltstone
       fatal = 14
     }
 
-    #region member
+    #region static_member
     /// <summary>
     /// 直近のlogfileを保存しておく
     /// </summary>
@@ -80,10 +83,25 @@ namespace saltstone
     public static MsgControl _msgconrol = null;
 
     /// <summary>
-    /// readするバイト数とデータの種類（この場合はlog)を保存したいな、、、
-    /// 自動ではnamed pipe recieveではやってくれない
+    /// logmanagerが起動しているかどうか 
+    /// serializerから除外
     /// </summary>
-    public int header;
+    [System.Text.Json.Serialization.JsonIgnore]
+    private static bool _startLogmanager;
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    private static string _logserer_exename;
+
+    #endregion
+
+    #region member
+
+    /// <summary>
+    /// readするバイト数とデータの種類（この場合はlog)を保存したいな、、、
+    /// 自動ではnamed pipe recieveではやってくれない 
+    /// namedpipeでやるので必要ない
+    /// </summary>
+    // public int header;
 
     public string logdate
     {
@@ -128,12 +146,43 @@ namespace saltstone
 
     public Logs.Logtype logtype;
 
-    /// <summary>
-    /// logmanagerが起動しているかどうか 
-    /// serializerから除外
-    /// </summary>
-    public static bool startLogmanager;
+
     #endregion
+
+    // interfaceにするべきか or abstract classにするべきか？
+    public string DataID
+    {
+      get
+      {
+        return Const_SerializeID;
+      }
+    }
+
+    public string data
+    {
+      get
+      {
+        string buff = JsonSerializer.Serialize(this);
+        // byte[] byt = System.Text.Encoding.UTF8.GetBytes(buff);
+        return buff;
+      }
+      set
+      {
+        // json serialied string to logs object
+        // string json = System.Text.Encoding.UTF8.GetString(value);
+        Logs l = JsonSerializer.Deserialize<Logs>(value);
+        // memberをcopy
+        this.logdate = l.logdate;
+        this.exename = l.exename;
+        this.exever = l.exever;
+        this.message = l.message;
+        this.method = l.method;
+        this.sourcefile = l.sourcefile;
+        this.trace = l.trace;
+        this.logtype = l.logtype;
+
+      }
+    }
 
     #region constructor
     public Logs()
@@ -197,8 +246,8 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
     {
       // logserverが起動しているか確認する
       // logserver.exeが実行されているかどうか
-      bool ret = Utils.checkrunexe(Const_LogserverExe);
-      if (ret == false)
+      // bool ret = Utils.checkrunexe(Const_LogserverExe);
+      if (_startLogmanager == false)
       {
         // writteのみにする
         write();
@@ -232,6 +281,13 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       // logs\20240120_1159.txt
       // logs\20240120_1159_trace.txt
       Logs l = new Logs(ex);
+
+      // logserverが起動していないときは単純にwriteして終わる
+      if (Logs._startLogmanager == false)
+      {
+        l.write();
+        return true;
+      }
 
       string buff = "";
       buff = JsonSerializer.Serialize(l);
@@ -409,6 +465,12 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
 
     }
 
+    private static System.Timers.Timer _timer;
+
+
+    /// <summary>
+    /// logmanagerを使用する場合にinit()をcallする
+    /// </summary>
     public static void init()
     {
       //       init();
@@ -422,6 +484,59 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       {
         _msgconrol = null;
       }
+      Inifile inifile = new Inifile("logs.ini");
+      if (inifile == null)
+      {
+        return;
+      }
+      _logserer_exename = inifile.get("Logserver");
+      if (string.IsNullOrEmpty(_logserer_exename))
+      {
+        return;
+      }
+      // logserverが起動しているかどうかをチェックする
+      // タイミングは、、、send or timer
+      // utilsにtimer classがあり、一括で管理している。 このため、global disposeで一括してdropしている
+      // logs単体では、、、 5sに一時、タイマーを使って無条件で起動チェックを行う
+      _timer = new System.Timers.Timer();
+      _timer.Interval = 5000; // every 5s
+      _timer.Elapsed += p_checkLogserver;
+      _timer.AutoReset = true; // event repeatly
+      _timer.Enabled = true;
+
+    }
+
+
+    /// <summary>
+    /// init()を使いlogserverを使用する際にtimerで実行される
+    /// 5sに一度、logserverが起動しているかどうかをチェックする
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="e"></param>
+    private static void p_checkLogserver(Object source, System.Timers.ElapsedEventArgs e)
+    {
+      _startLogmanager = false;
+      // bool ret = Utils.checkrunexe(Const_LogserverExe);
+      if (_startLogmanager == true)
+      {
+        _startLogmanager = true;
+        return;
+      }
+    }
+
+    public static string getPipename()
+    {
+      Inifile inifile = new Inifile("logs.ini");
+      if (inifile == null)
+      {
+        return "";
+      }
+      string buff = inifile.get("pipename");
+      if (string.IsNullOrEmpty(_logserer_exename))
+      {
+        return "";
+      }
+      return buff;
     }
 
     /// <summary>

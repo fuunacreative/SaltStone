@@ -21,19 +21,25 @@ namespace LogManager_test
       // win C#だと起動すればよいが、webだと起動しない方がよい
       // なので、クライアント側にまかせる
       // exception test
+
+      Logs.init();
+
       try
       {
         throw new Exception("testexception");
-      } catch (Exception ex) {
+      }
+      catch (Exception ex)
+      {
         // Logs.write(ex);
         Logs.send(ex);
       }
 
+
       // TODO log4netを使えないか？
 
-           // logserver l 
-           // l.init
+      // logserver l 
+      // l.init
 
-        }
+    }
   }
 }

@@ -6,14 +6,15 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <OutputPath>..\..\debug\</OutputPath>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <PlatformTarget>x64</PlatformTarget>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
+
   <ItemGroup>
+    <ProjectReference Include="..\..\Slibs\SLibGlobals\SLibGlobals.csproj" />
     <ProjectReference Include="..\..\Slibs\Utils\Utils.csproj" />
   </ItemGroup>
 

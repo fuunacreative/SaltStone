@@ -209,9 +209,14 @@ namespace saltstone
       Semaphores.init();
       STasks.init();
 
+
       // log serverの場合はwriterはopen不要
       // どうやって判断するか？
+      // initを起動し、exeをチェックする
+      // logs.send()でexeがあればnamed pipeで送信、
+      // なければfile writeする
       // Logs.init();
+      Logs.init();
 
       SLMemoryMappedFile.init();
       _dispose = new List<Action>();
@@ -225,6 +230,7 @@ namespace saltstone
 
     public static DB.Sqlite getSettingDB()
     {
+      // enviniはclassとして使っている
       string buff = envini[PGInifile.INI_SettingDB];
       if (buff.Length == 0)
       {
@@ -273,6 +279,8 @@ namespace saltstone
       Logs.Dispose();
       Semaphores.Dispose();
       STasks.Dispose();
+
+      envini?.Dispose();
 
       // taskをdisposeしているのに、waitoneが走ったままになってる
     }

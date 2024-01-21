@@ -22,6 +22,10 @@ namespace saltstone
     public const string CMD_TERMINATE = "TERMINATE";
     private string _taskid;
     private string _pipename;
+    /// <summary>
+    /// named pipeの先頭５バイトで送られてくるdataID
+    /// </summary>
+    public string datatype;
 
     public SNamedpipeServer(string pipename)
     {
@@ -62,33 +66,68 @@ namespace saltstone
     {
       bool fret = false;
 
-      int maxpath = Utils.Files.MAX_PATH;
-      BinaryReader bs = null;
-      UnicodeEncoding encode = new UnicodeEncoding();
-      byte[] buff = new byte[maxpath];
-      string intext = "";
+      //int maxpath = Utils.Files.MAX_PATH;
+      //BinaryReader bs = null;
+      //UnicodeEncoding encode = new UnicodeEncoding();
+      //byte[] buff = new byte[maxpath];
+      //string intext = "";
 
       if (evt_pipereaded == null)
       {
         return fret;
       }
 
+      byte[] dataid_byte = new byte[5];
       try
       {
-        bs = new BinaryReader(pNpServer);
-        // readできたらdeletageで指定したfuncをcall?
-        // "TERMINATE"が送られてきたら終了
-        // clientがdisconectされると、isconnectedはfalseになる
-        while (pNpServer.IsConnected == true)
+        // IsConnectedがfalseの場合、named_pipeのrecieveを待機せずに終了してしまう
+        while (true)
         {
-          bs.Read(buff, 0, maxpath);
-          intext = encode.GetString(buff).Trim('\0');
-          if (intext == CMD_TERMINATE)
+          // 接続を常に待機する
+
+          waitConnect();
+
+          if (pNpServer.IsConnected == false)
           {
-            break;
+            Utils.sleep(500);
+            continue;
           }
-          evt_pipereaded(intext);
-          intext = "";
+          if (pNpServer.Length < 5)
+          {
+            // 5バイト以内であれば、不正データとして扱う
+            // データを破棄しないといけないのでは？
+            Utils.sleep(500);
+            continue;
+          }
+          // 頭5バイトがちゃんとstringに変換できるか？ 
+          // named pipe data id "LOG__"など
+          // ５バイト固定なので、binary readerのread stringは使えない
+          // pNpServerはdisposeでcloseする。call側でコントロールする
+          int i = pNpServer.Read(dataid_byte, 0, 5);
+          string dataid = System.Text.Encoding.UTF8.GetString(dataid_byte);
+          // dataid と logsのdataidが一致しているかを確認
+
+          // ６バイト目からstring dataを読み込む
+          // pNpServer.Position = 6;
+          using (BinaryReader bs = new BinaryReader(pNpServer))
+          {
+
+            bs.BaseStream.Position = 6;
+            string buff = bs.ReadString();
+            evt_pipereaded(buff);
+          }
+
+          //// readできたらdeletageで指定したfuncをcall?
+          //// "TERMINATE"が送られてきたら終了
+          //// clientがdisconectされると、isconnectedはfalseになる
+          //bs.Read(buff, 0, maxpath);
+          //intext = encode.GetString(buff).Trim('\0');
+          //if (intext == CMD_TERMINATE)
+          //{
+          //  break;
+          //}
+          //evt_pipereaded(intext);
+          //intext = "";
         }
       }
       catch (Exception e)
@@ -97,14 +136,12 @@ namespace saltstone
         Logs.write(e);
         return fret;
       }
-      finally
-      {
-        bs?.Dispose();
-        // encode = null;
-      }
-
-      fret = true;
-      return fret;
+      //finally
+      //{
+      //  bs?.Dispose();
+      //  // encode = null;
+      //}
+      // return true;
     }
 
     public void proctask()
