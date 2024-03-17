@@ -58,10 +58,17 @@ namespace saltstone
       bool fret = false;
 
       pNpServer.WaitForConnection();
+      //      pNpServer.WaitForConnectionAsync(CancellationToken); '
 
       fret = true;
       return fret;
     }
+
+    // private func
+    /// <summary>
+    /// private func  connect & read -> eve_pipereaded call 
+    /// </summary>
+    /// <returns></returns>
     public bool readloop()
     {
       bool fret = false;
@@ -80,42 +87,74 @@ namespace saltstone
       byte[] dataid_byte = new byte[5];
       try
       {
+        //Task ta = pNpServer.WaitForConnectionAsync(ct);
+        //ta.11
         // IsConnectedがfalseの場合、named_pipeのrecieveを待機せずに終了してしまう
+
+        // TODO wait asyncを使えば、無限loopする必要はない
+        // waitをasyncで行ったとしても、read後に再度、waitしなければならない
+        // 
         while (true)
         {
           // 接続を常に待機する
-
           waitConnect();
 
+          // TODO pNpServerがformからloseできるように考慮する
+          // waitConnect()ではwait abendしてしまうため、
+          // 強制終了ができない？
           if (pNpServer.IsConnected == false)
           {
             Utils.sleep(500);
             continue;
           }
-          if (pNpServer.Length < 5)
+          // readableかどうかチェックする
+          if (pNpServer.CanRead == false)
+          {
+            continue;
+          }
+
+          // client側でwriteするまでwaitする
+          string buff = "";
+          using (System.IO.StreamReader ss = new StreamReader(pNpServer))
+          {
+            buff = ss.ReadToEnd();
+            // buff = ss.ReadLine();
+          }
+
+          //}
+          // 正規データである事を示すID string 1バイトがほしいかな、、、
+          // ヘッダ文字数
+          // namedpipe "N"
+          // datatype "LOGS__"
+          if (buff.Length < 5)
           {
             // 5バイト以内であれば、不正データとして扱う
             // データを破棄しないといけないのでは？
             Utils.sleep(500);
             continue;
           }
-          // 頭5バイトがちゃんとstringに変換できるか？ 
-          // named pipe data id "LOG__"など
-          // ５バイト固定なので、binary readerのread stringは使えない
-          // pNpServerはdisposeでcloseする。call側でコントロールする
-          int i = pNpServer.Read(dataid_byte, 0, 5);
-          string dataid = System.Text.Encoding.UTF8.GetString(dataid_byte);
-          // dataid と logsのdataidが一致しているかを確認
+          //　TODO TEST
+          Logs l = new Logs();
+          l.data = buff;
 
-          // ６バイト目からstring dataを読み込む
-          // pNpServer.Position = 6;
-          using (BinaryReader bs = new BinaryReader(pNpServer))
-          {
 
-            bs.BaseStream.Position = 6;
-            string buff = bs.ReadString();
-            evt_pipereaded(buff);
-          }
+          //// 頭5バイトがちゃんとstringに変換できるか？ 
+          //// named pipe data id "LOG__"など
+          //// ５バイト固定なので、binary readerのread stringは使えない
+          //// pNpServerはdisposeでcloseする。call側でコントロールする
+          //int i = pNpServer.Read(dataid_byte, 0, 5);
+          //string dataid = System.Text.Encoding.UTF8.GetString(dataid_byte);
+          //// dataid と logsのdataidが一致しているかを確認
+
+          //// ６バイト目からstring dataを読み込む
+          //// pNpServer.Position = 6;
+          //using (BinaryReader bs = new BinaryReader(pNpServer))
+          //{
+
+          //  bs.BaseStream.Position = 6;
+          //  string buff = bs.ReadString();
+          //  evt_pipereaded(buff);
+          //}
 
           //// readできたらdeletageで指定したfuncをcall?
           //// "TERMINATE"が送られてきたら終了
@@ -147,6 +186,7 @@ namespace saltstone
     public void proctask()
     {
       _taskid = STasks.createTask(waitprocess);
+      // TODO test taskがちゃんと動いているか確認する
     }
 
     public void cancelTask()

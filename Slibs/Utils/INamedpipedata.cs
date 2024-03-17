@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace saltstone
 {
-  public interface SNamedpipe_data
+  public interface INamedpipedata
   {
     /// <summary>
     /// ５バイトの識別子

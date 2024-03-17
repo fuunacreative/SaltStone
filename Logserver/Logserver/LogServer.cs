@@ -58,15 +58,18 @@ namespace saltstone
       _pipeserver.initServer(evt_piperecieve);
 
       // read loopは別スレッドじゃないとだめなのでは？
-      STasks.createTask(readloop);
+
+      // string id = STasks.createTask(readloop);
+      _pipeserver.evt_pipereaded += evt_piperecieve;
+      _pipeserver.proctask();
 
       return true;
     }
     
-    public void readloop()
-    {
-      _pipeserver.readloop();
-    }
+    //public void readloop()
+    //{
+    //    _pipeserver.readloop();
+    //}
 
     public void evt_piperecieve(string arg)
     {

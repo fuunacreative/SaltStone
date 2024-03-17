@@ -34,3 +34,8 @@ nullableをokとし、assemblyinfoを作成するように変更する
 
 あと問題はplatform x64にしたいが、、、
 
+
+vs2022 keybind
+https://qiita.com/nobushi95/items/95eb26ecff0964748e62
+コード補完がどうしてもできないな、、、
+

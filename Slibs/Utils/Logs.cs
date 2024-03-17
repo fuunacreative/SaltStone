@@ -38,7 +38,7 @@ namespace saltstone
   /// </summary>
   /// 
   [Serializable()]
-  public class Logs : SNamedpipe_data
+  public class Logs : INamedpipedata
   {
 
 
@@ -91,6 +91,9 @@ namespace saltstone
 
     [System.Text.Json.Serialization.JsonIgnore]
     private static string _logserer_exename;
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    private static string _pipename;
 
     #endregion
 
@@ -158,11 +161,13 @@ namespace saltstone
       }
     }
 
+    [System.Text.Json.Serialization.JsonIgnore]
     public string data
     {
       get
       {
-        string buff = JsonSerializer.Serialize(this);
+        // ここで stack over flowが発生する -> jsonignoreをつけ忘れていたため
+        string buff = DataID + JsonSerializer.Serialize(this);
         // byte[] byt = System.Text.Encoding.UTF8.GetBytes(buff);
         return buff;
       }
@@ -170,7 +175,9 @@ namespace saltstone
       {
         // json serialied string to logs object
         // string json = System.Text.Encoding.UTF8.GetString(value);
-        Logs l = JsonSerializer.Deserialize<Logs>(value);
+        // 先頭5バイトはdataIDとして読み飛ばす
+        string buff = value.Substring(5);
+        Logs l = JsonSerializer.Deserialize<Logs>(buff);
         // memberをcopy
         this.logdate = l.logdate;
         this.exename = l.exename;
@@ -289,14 +296,21 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
         return true;
       }
 
-      string buff = "";
-      buff = JsonSerializer.Serialize(l);
-
+      //string buff = "";
+      //try
+      //{
+      //  // TODO 異常終了する、、、なぜ？
+      //  //buff = JsonSerializer.Serialize<Logs>(l);
+      //  buff = l.data;
+      //} catch (Exception inex)
+      //{
+      //  string err = inex.Message;
+      //}
       SNamedpipeClient cpipe = null;
-      SNamedpipes.getClient("pipename", out cpipe);
+      SNamedpipes.getClient(_pipename, out cpipe);
       using (cpipe)
       {
-        cpipe.send(buff);
+        cpipe.send(l);
       }
 
       return true;
@@ -490,10 +504,13 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
         return;
       }
       _logserer_exename = inifile.get("Logserver");
+      _pipename = inifile.get("pipename");
       if (string.IsNullOrEmpty(_logserer_exename))
       {
         return;
       }
+      checkLogserver();
+
       // logserverが起動しているかどうかをチェックする
       // タイミングは、、、send or timer
       // utilsにtimer classがあり、一括で管理している。 このため、global disposeで一括してdropしている
@@ -515,9 +532,13 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
     /// <param name="e"></param>
     private static void p_checkLogserver(Object source, System.Timers.ElapsedEventArgs e)
     {
+      checkLogserver();
+    }
+    private static void checkLogserver()
+    {
       _startLogmanager = false;
-      // bool ret = Utils.checkrunexe(Const_LogserverExe);
-      if (_startLogmanager == true)
+      bool ret = Utils.checkrunexe(_logserer_exename);
+      if (ret == true)
       {
         _startLogmanager = true;
         return;

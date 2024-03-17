@@ -1,5 +1,6 @@
 using saltstone;
 using System.ComponentModel.Design.Serialization;
+using System.Text.Json;
 
 namespace LogManager_test
 {
@@ -22,8 +23,8 @@ namespace LogManager_test
       // なので、クライアント側にまかせる
       // exception test
 
-      Logs.init();
-
+      Logs l = new Logs();
+      // string buff = l.data();
       try
       {
         throw new Exception("testexception");
@@ -35,7 +36,8 @@ namespace LogManager_test
       }
 
 
-      // TODO log4netを使えないか？
+      // log4netを使えないか？
+      // メンテも終了しているし、使わない
 
       // logserver l 
       // l.init
