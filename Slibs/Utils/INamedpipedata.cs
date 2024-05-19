@@ -13,11 +13,11 @@ namespace saltstone
     /// </summary>
     string DataID { get; }
 
-    /// <summary>
-    /// 実データ 長さはstringで送受信するのだから、必要ないのでは？
-    /// 実データは必ずstring形式で送る
-    /// 必ずserialize(json)を行う
-    /// </summary>
-    string data { get; set; }
+
+    public string getSerialize();
+    public bool setSerialize(string buff);
+
+
+
   }
 }

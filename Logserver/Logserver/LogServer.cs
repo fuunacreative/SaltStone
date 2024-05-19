@@ -15,6 +15,8 @@ namespace saltstone
   {
     // singleton modelにする
     private static LogServer _server = null;
+    public delegate void deg_recieveLog(Logs ls);
+    public deg_recieveLog evt_recieveLog;
 
     SNamedpipeServer _pipeserver;
 
@@ -71,9 +73,13 @@ namespace saltstone
     //    _pipeserver.readloop();
     //}
 
-    public void evt_piperecieve(string arg)
+    public void evt_piperecieve(Logs arg)
     {
-      string buff = arg;
+      string buff = arg.message;
+      if (evt_recieveLog != null)
+      {
+        evt_recieveLog(arg) ;
+      }
     }
 
 

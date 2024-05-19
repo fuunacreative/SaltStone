@@ -17,7 +17,7 @@ namespace saltstone
   public class SNamedpipeServer
   {
     public NamedPipeServerStream pNpServer;
-    public delegate void del_pipereaded(string arg);
+    public delegate void del_pipereaded(Logs arg);
     public del_pipereaded evt_pipereaded;
     public const string CMD_TERMINATE = "TERMINATE";
     private string _taskid;
@@ -57,6 +57,9 @@ namespace saltstone
     {
       bool fret = false;
 
+      if ( pNpServer.IsConnected  == true) {
+        return true;
+      }
       pNpServer.WaitForConnection();
       //      pNpServer.WaitForConnectionAsync(CancellationToken); '
 
@@ -126,16 +129,21 @@ namespace saltstone
           // ヘッダ文字数
           // namedpipe "N"
           // datatype "LOGS__"
-          if (buff.Length < 5)
-          {
-            // 5バイト以内であれば、不正データとして扱う
-            // データを破棄しないといけないのでは？
-            Utils.sleep(500);
-            continue;
-          }
-          //　TODO TEST
+          //if (buff.Length < 5)
+          //{
+          //  // 5バイト以内であれば、不正データとして扱う
+          //  // データを破棄しないといけないのでは？
+          //  Utils.sleep(500);
+          //  continue;
+          //}
           Logs l = new Logs();
-          l.data = buff;
+          l.setSerialize(buff);
+
+          // fire event
+          // delegate 
+          if (evt_pipereaded != null) {
+            evt_pipereaded(l);
+          }
 
 
           //// 頭5バイトがちゃんとstringに変換できるか？ 

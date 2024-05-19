@@ -52,6 +52,11 @@ namespace saltstone
     // [System.Text.Json.Serialization.JsonIgnore]
     // private const string Const_LogserverExe = "logserver.exe";
 
+    /// <summary>
+    /// named pipe clientはprivateにして開きっぱなしにする
+    /// </summary>
+    private static SNamedpipeClient cpipe = null;
+
 
     public enum Logtype
     {
@@ -161,36 +166,6 @@ namespace saltstone
       }
     }
 
-    [System.Text.Json.Serialization.JsonIgnore]
-    public string data
-    {
-      get
-      {
-        // ここで stack over flowが発生する -> jsonignoreをつけ忘れていたため
-        string buff = DataID + JsonSerializer.Serialize(this);
-        // byte[] byt = System.Text.Encoding.UTF8.GetBytes(buff);
-        return buff;
-      }
-      set
-      {
-        // json serialied string to logs object
-        // string json = System.Text.Encoding.UTF8.GetString(value);
-        // 先頭5バイトはdataIDとして読み飛ばす
-        string buff = value.Substring(5);
-        Logs l = JsonSerializer.Deserialize<Logs>(buff);
-        // memberをcopy
-        this.logdate = l.logdate;
-        this.exename = l.exename;
-        this.exever = l.exever;
-        this.message = l.message;
-        this.method = l.method;
-        this.sourcefile = l.sourcefile;
-        this.trace = l.trace;
-        this.logtype = l.logtype;
-
-      }
-    }
-
     #region constructor
     public Logs()
     {
@@ -237,9 +212,42 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
 
     #endregion
 
+    public static void Dispose()
+    {
+      cpipe?.Dispose();
+    }
+
     public static bool startLogManger()
     {
       // TODO  logmanagerのexeを起動する
+
+      return true;
+    }
+
+    public string getSerialize()
+    {
+      // DataIDをセットするかどうか？
+      // 特にセットしない
+      string buff = JsonSerializer.Serialize(this);
+      return buff;
+    }
+
+    public bool setSerialize(string buff)
+    {
+      // json serialied string to logs object
+      // string json = System.Text.Encoding.UTF8.GetString(value);
+      // 先頭5バイトはdataIDとして読み飛ばす
+      // string buff = value.Substring(5);
+      Logs l = JsonSerializer.Deserialize<Logs>(buff);
+      // memberをcopy
+      this.logdate = l.logdate;
+      this.exename = l.exename;
+      this.exever = l.exever;
+      this.message = l.message;
+      this.method = l.method;
+      this.sourcefile = l.sourcefile;
+      this.trace = l.trace;
+      this.logtype = l.logtype;
 
       return true;
     }
@@ -306,12 +314,16 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       //{
       //  string err = inex.Message;
       //}
-      SNamedpipeClient cpipe = null;
       SNamedpipes.getClient(_pipename, out cpipe);
-      using (cpipe)
-      {
-        cpipe.send(l);
-      }
+      // TODO cpipeをopenしっぱなしだとうまく送信できない
+      // かといってdisposeしてしまうと、うまく動かない
+      // 一度、private memberにして開きっぱなしにしてみる
+      //using (cpipe) {
+      //  cpipe.connect();
+      //  cpipe.send(l);
+      //}
+      cpipe.connect();
+      cpipe.send(l);
 
       return true;
     }
@@ -473,11 +485,6 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       return arg.getlogtext();
     }
 
-
-    public static void Dispose()
-    {
-
-    }
 
     private static System.Timers.Timer _timer;
 

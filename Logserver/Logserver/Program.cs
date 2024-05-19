@@ -139,20 +139,23 @@ namespace logserver
         // revloopは必要ないかも -> event riseされるのでは？
         // _taskid = Tasks.createTask(revloop);
         // Logs.IPCReieveLog();
-        using (LogServer ls = LogServer.getInstance())
+        LogServer ls;
+        using (ls = LogServer.getInstance())
         {
           // ls.addevent();
           // 内部でnamed pipeのreceive処理を実行する
           // 無限待機する
           ls.initServer();
           // ipcのsend revがうまく動いていないみたい
+          Application.EnableVisualStyles();
+          Application.SetCompatibleTextRenderingDefault(false);
+          frmLogView f = new frmLogView();
+          f.lserver = ls;
+          Application.Run(f);
 
         }
 
         // 既に起動している場合はlogだけ書き込む
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(new frmLogView());
 
 
         // logserverのclose処理

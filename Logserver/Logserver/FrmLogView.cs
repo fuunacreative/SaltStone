@@ -17,7 +17,7 @@ namespace saltstone
   public partial class frmLogView : Form
   {
     private DataTable _tablelog = null;
-    private LogServer lserver = null;
+    public LogServer lserver = null;
 
     [SupportedOSPlatform("windows")]
     public frmLogView()
@@ -52,6 +52,9 @@ namespace saltstone
       for (int i = 0; i < lstLog.Columns.Count; i++)
       {
         lstLog.Columns[i].HeaderText = _tablelog.Columns[i].Caption;
+      }
+      if (lserver != null) {
+        lserver.evt_recieveLog += displog;
       }
     }
 

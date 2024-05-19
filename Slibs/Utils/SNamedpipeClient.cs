@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace saltstone
@@ -40,19 +41,27 @@ namespace saltstone
       {
         init();
       }
+      init();
       if (pNpClient.IsConnected == true)
       {
         return true;
       }
 
-
+      // TODO 再接続しようとするとabendする
+      // なぜ閉じるのか？ どこかで閉じる処理を行っている disposeはしていない
       pNpClient.Connect();
 
       fret = true;
       return fret;
     }
 
-    public bool send(INamedpipedata arg)
+    public bool send(Logs log) 
+    {
+      string buff = JsonSerializer.Serialize<Logs>(log);
+      return send(buff);
+    }
+
+    public bool send(string arg)
     {
       bool fret = false;
       // initされていて、pNpClientはnot nullのはずなのに、nullとなり、init()が走る、、、
@@ -69,10 +78,20 @@ namespace saltstone
         connect();
       }
       // named pipeで送信する場合に、5バイト（５文字）を先頭につける
-      string buff = arg.DataID + arg.data;
-      using (System.IO.StreamWriter ss = new StreamWriter(pNpClient))
+      // TODO 受け手はjson serializerで受ける
+      // 送り側も合わせる
+      //  Logs l = JsonSerializer.Deserialize<Logs>(buff);
+      // string buff = arg.DataID + arg.data;
+      using (System.IO.StreamWriter ss = new StreamWriter(pNpClient,leaveOpen: true))
       {
-        ss.WriteAsync(buff);
+        try {
+          ss.WriteAsync(arg);
+          ss.FlushAsync();
+        } catch (Exception e)  {
+          string buff = e.Message;
+          
+        }
+
       }
 
       //System.IO.BinaryWriter bs;
