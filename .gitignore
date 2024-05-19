@@ -1,3 +1,6 @@
+*.sh
+.DS*
+readme.txt
 *.exe
 *.cache
 *.dll
