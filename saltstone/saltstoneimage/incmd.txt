@@ -1,0 +1,17 @@
+// １、体→顔(通常)→髪(不透明)→眉→目→口→髪（半透明） Aパターン
+// ２，体→髪(不透明)→眉→目→口→髪（半透明）→　他 →顔（乗算） 後ろは？
+// width x height
+size=400x320
+out=Z:\develop\a.png
+base=C:\Users\fuuna\Videos\charas\れいむ
+picturelist
+体\00.png
+顔\00a.png
+髪\00.png
+眉\11.png
+目\00.png
+口\11.png
+髪\00.png
+// 明るさ、コントラスト、彩度、色相をどーするか？ -> 計算式で変更できる
+// 画像ごとに乗算するかどうかを判定する必要がある
+// 顔\00b.png , multiply コンマは使えない　空白もng [multiply]にするか

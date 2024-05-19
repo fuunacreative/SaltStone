@@ -1,0 +1,22 @@
+﻿99	N	世界で一番おひめさま	(Reverb 0 0 0)(Tone 110)せええええええ(Tone 200)かああああああああああああああああああああああ(Tone 110)いいいいいい(Tone 90)でええええええ(Tone 110)いいい(Tone 90)ちいい(Tone 110)ばああ(Tone 135)んんんん(Tone 145)おおおおお(Tone 135)ひいいいい(Tone 125)めええええ(Tone 110)さああああ(Tone 200)まあああああああああああああ。
+99	N	電卓を起動	(Command calc.exe)
+99	N	チャイムの音	(Sound C:\WINDOWS\Media\chimes.wav)
+98	N	バージョンは？？	私のバージョンは(Info Version)ですよー
+98	N	変換モードは？？	変換モードは(Info ConvertMode)ですよー
+98	N	何時？？	時刻は(Info NowTime)ですよー
+98	N	何日？？	今日は(Info NowDate)ですよー
+11	N	右）	(Volume 0 100)
+11	N	両）	(Volume 100 100)
+11	N	左）	(Volume 100 0)
+10	N	やまびこ）	(Reverb 2.5 0.7 40)
+10	N	YAMA）	(Reverb 2.5 0.7 40)
+10	N	エコー）	(Reverb 0.5 0.1 40)
+10	N	ECHO）	(Reverb 0.5 0.1 40)
+2	N	Y）	(Voice 1)(Speed 60)
+2	N	B）	(Voice 2)
+2	N	H）	(Voice 3)
+2	N	D）	(Voice 4)
+2	N	A）	(Voice 5)
+2	N	R）	(Voice 6)
+2	N	T）	(Voice 7)
+2	N	G）	(Voice 8)

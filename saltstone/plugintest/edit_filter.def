@@ -1,0 +1,5 @@
+LIBRARY plugintest.auf
+
+EXPORTS
+	GetFilterTable @1
+

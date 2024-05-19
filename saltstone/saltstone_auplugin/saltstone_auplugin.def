@@ -1,0 +1,8 @@
+﻿; saltlibretplugin.def : DLL のモジュール パラメーターを宣言します。
+
+LIBRARY saltstone_auplugin.auf
+
+EXPORTS
+	GetFilterTable @1
+
+

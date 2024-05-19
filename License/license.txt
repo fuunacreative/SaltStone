@@ -1,0 +1,7 @@
+Copyright 
+2023/8/13 - 2024/1/9 Y.Iwanaga  All Rights Reserved.
+
+
+MIT License
+
+read MIT_License.txt

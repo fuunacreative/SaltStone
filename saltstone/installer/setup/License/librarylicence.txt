@@ -1,0 +1,6 @@
+library license
+
+1. readjenc
+1. html parser hig???
+1. dotzip?
+1. zlib?
