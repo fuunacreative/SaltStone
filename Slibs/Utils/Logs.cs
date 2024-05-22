@@ -182,7 +182,7 @@ namespace saltstone
     public Logs(Exception ex) : this()
     {
 
-      // 先にlogsのconstructerが動く
+      // 先にlogsのconstructerを動かす
       logtype = Logtype.error;
       exename = ex.Source;
 

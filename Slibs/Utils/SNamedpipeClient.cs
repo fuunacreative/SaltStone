@@ -85,6 +85,8 @@ namespace saltstone
       using (System.IO.StreamWriter ss = new StreamWriter(pNpClient,leaveOpen: true))
       {
         try {
+          // このあたりがおかしい writeしているのに２重で送信されているし、wirte endが検知されていない
+
           ss.WriteAsync(arg);
           ss.FlushAsync();
         } catch (Exception e)  {
