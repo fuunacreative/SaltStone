@@ -23,7 +23,6 @@ namespace LogManager_test
       // なので、クライアント側にまかせる
       // exception test
 
-      Logs l = new Logs();
       // string buff = l.data();
       try
       {
@@ -31,8 +30,12 @@ namespace LogManager_test
       }
       catch (Exception ex)
       {
-        // Logs.write(ex);
-        Logs.send(ex);
+        //Logs l = new Logs(ex);
+        Logs.write(ex);
+        // sendはnamedpieを使用して logserverにlog送信を行う
+        // なぜnamed pipeが動かないか調査しておく
+        // programを終了し、disposeが動くと log server側でイベントが発生する
+        // Logs.send(ex);
       }
 
 

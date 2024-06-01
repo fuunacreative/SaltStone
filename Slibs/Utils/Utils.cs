@@ -12,11 +12,11 @@ using System.Net.Http;
 using System.Runtime.Versioning;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 
-namespace saltstone
+namespace Utils
 {
 
   // internalにするのは、sqliteでも同じclassを使用しているため
-  public static class Utils
+  public static class Util
   {
     // open urlした時に、自分をbring to frontするための変数
 
@@ -27,7 +27,7 @@ namespace saltstone
     public class Timer : IDisposable
     {
       // 内部でタイマーを保管し、終了時に一括して停止させる
-      private static List<Utils.Timer> _timers;
+      private static List<Timer> _timers;
 
       private System.Timers.Timer _timer;
       public delegate void del_evt_timer(object sender, System.Timers.ElapsedEventArgs e);
@@ -48,9 +48,9 @@ namespace saltstone
       }
 
 
-      public static Utils.Timer getTimer()
+      public static Timer getTimer()
       {
-        Utils.Timer t = new Timer();
+        Timer t = new Timer();
 
         return t;
 
@@ -66,7 +66,7 @@ namespace saltstone
         {
           if (_timers == null)
           {
-            Utils.Timer.disabletimer(this);
+            Timer.disabletimer(this);
             return true;
           }
           lock (_timers)
@@ -127,7 +127,7 @@ namespace saltstone
           {
             return;
           }
-          foreach (Utils.Timer t in _timers)
+          foreach (Timer t in _timers)
           {
             t.Close();
           }
@@ -140,7 +140,7 @@ namespace saltstone
         _timer = new System.Timers.Timer();
         if (_timers == null)
         {
-          _timers = new List<Utils.Timer>();
+          _timers = new List<Timer>();
         }
         _timers.Add(this);
       }
@@ -224,6 +224,8 @@ namespace saltstone
         watcher.NotifyFilter = NotifyFilters.CreationTime
           | NotifyFilters.FileName
           | NotifyFilters.Size;
+        // TODO craete eventはfile create , file updateで作成する。一度のみとはmicrosoft documentでは保障されていない
+        // このため、一度作成済みのものはskipするなどの処理が必要になる
         watcher.Created += OnCreated;
         watcher.Changed += OnChanged;
         watchers.Add(watcher);
@@ -298,11 +300,13 @@ namespace saltstone
         {
           return;
         }
+        // TODO delegate eventをfireする
+
       }
       private Dictionary<string, long> createfiles;
       private Dictionary<string, long> createfiletimes;
       // 作成された時間のticks
-      private Utils.Timer watchtimer;
+      private Timer watchtimer;
       private void OnChanged(object sender, FileSystemEventArgs e)
       {
         if (e.ChangeType != WatcherChangeTypes.Changed)
@@ -658,7 +662,7 @@ namespace saltstone
           return true;
         }
         // bring fontが動かないときがあったのを調整 また調整が必要かも
-        Utils.sleep(500);
+        sleep(500);
         // sleep(500);
 
         if (winmode == enum_runwinfront.bringToFront)
@@ -672,9 +676,9 @@ namespace saltstone
             {
               break;
             }
-            if (Utils.mainForm != null)
+            if (mainForm != null)
             {
-              setWindowForground(Utils.mainForm);
+              setWindowForground(mainForm);
             }
             else
             {
@@ -714,7 +718,7 @@ namespace saltstone
     public static bool checkrunexec(string processname, out Process[] procs)
     {
       bool runflag = false;
-      string buff = Utils.Files.getbasename(processname);
+      string buff = Files.getbasename(processname);
       procs = System.Diagnostics.Process.GetProcessesByName(buff);
       if (procs.Length != 0)
       {
@@ -804,7 +808,7 @@ namespace saltstone
       return buff;
     }
 
-    private static Utils.Timer sleeptimer;
+    private static Timer sleeptimer;
 
     [SupportedOSPlatform("windows")]
     public static void sleep(int millsec)
@@ -971,7 +975,7 @@ namespace saltstone
         p.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
       }
       p.Start();
-      Utils.sleep(100);
+      sleep(100);
       // Utils.browserhWnd = p.MainWindowHandle;
       /*
       bool ret = false;
@@ -1000,239 +1004,6 @@ namespace saltstone
 
 
 
-    public class Sysinfo
-    {
-      public static string homedir = null;
-      public static string downloaddir = null;
-      public static string desktopdir = null;
-      public static string videodir = null;
-      /// <summary>
-      /// log出力を行うディレクトリの定義
-      /// 実行ファイル \ logsにするか、、、
-      /// </summary>
-      public static string logdir = null;
-
-      /// <summary>
-      /// logs.csで出力するlogfile name  不要では？
-      /// </summary>
-      // public static string logfile = null;
-
-      // const string HOME_VIDEODIR = "Video";
-
-      // TODO installed c++ runtime check
-      // TODO installed pg check
-
-      //public string getVideodir()
-      //{
-      //  return getHomedir() + "\\" + HOME_VIDEODIR;
-      //}
-
-      public static string getExeVersion()
-      {
-        string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        return ver;
-      }
-
-      // 現在実行中のexeファイルのfullpathを返す
-      public static string getExeName()
-      {
-        //　string exefile = System.Reflection.Assembly.GetEntryAssembly().Location;
-        // System.Reflection.Assembly exeobj = System.Reflection.Assembly.GetExecutingAssembly();
-        // string exefile = exeobj.FullName;
-        Process p = Process.GetCurrentProcess();
-        string exefile = p.MainModule.FileName;
-        return exefile;
-      }
-
-      public static string getCurrentExepath()
-      {
-        // dllの場合、dll名がきてしまう
-        // string exefile = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
-        string exefile = System.Reflection.Assembly.GetEntryAssembly().Location;
-
-        // return Utils.Files.getfilename(exefile);
-        return Utils.Files.getfilepath(exefile);
-      }
-
-
-      public static string getexepath(string processname)
-      {
-        string path = "";
-
-        System.Diagnostics.Process[] procs = System.Diagnostics.Process.GetProcessesByName(processname);
-        if (procs.Length == 0)
-        {
-          // this.Log("not run BouyomiChan");
-          // iniに棒読みは不要 Yb_guiでしか使用しない
-          // globalsには登録しておきたい
-          //  execBouyomichan = false;
-          return path;
-        }
-        System.Diagnostics.Process p = procs[0];
-        path = p.Modules[0].FileName;
-
-        return path;
-      }
-
-
-
-
-      // %HOME%\Downloadsのfullpathを取得する
-      public static string getDownloaddir()
-      {
-
-        if (downloaddir != null)
-        {
-          return downloaddir;
-        }
-        // vmwareだとdownload先はshare folderになってしまう
-        Guid guid_download = new Guid("374DE290-123F-4565-9164-39C4925E467B");
-
-        // string downloaddir = Environment.GetFolderPath(Environment.SpecialFolder.down)
-        string buff = "";
-        IntPtr pPath = IntPtr.Zero;
-        int hr = win32api.SHGetKnownFolderPath(guid_download, 0, IntPtr.Zero, out pPath);
-        if (hr == 0)
-        {
-          buff = Marshal.PtrToStringUni(pPath);
-        }
-        if (buff.Substring(0, 1) == "\\")
-        {
-          // homeを元にdownload dirを決定
-          string home = getHomedir();
-          buff = home + "\\Downloads";
-
-        }
-        downloaddir = buff;
-        return buff;
-      }
-
-      public static string getDesktopdir()
-      {
-        if (desktopdir != null)
-        {
-          return desktopdir;
-        }
-        desktopdir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        return desktopdir;
-
-      }
-
-      public static string getHomedir()
-      {
-        if (homedir != null)
-        {
-          return homedir;
-        }
-        homedir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        // homedir = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-        return homedir;
-      }
-
-      public static string getLogdir()
-      {
-        if (logdir != null)
-        {
-          return logdir;
-        }
-        string buff = Utils.Sysinfo.getCurrentExepath();
-        buff += "\\logs";
-        logdir = buff;
-        Utils.Files.mkdir(logdir);
-        return logdir;
-      }
-
-      public static string getTracefile()
-      {
-        string buff = getLogdir();
-        buff += "\\" + Utils.getNowDatetime() + "_trace.txt";
-        return buff;
-      }
-
-      public static string getLogfile()
-      {
-        // logfileとは何か？
-        string buff = getLogdir();
-        buff += "\\" + Utils.getNowDatetime() + ".txt";
-        return buff;
-      }
-
-      public static Diskinfo getDiskUsageInfo(string driveletter = "C")
-      {
-        // inst先のディスクの全体容量を取得
-        DriveInfo[] drives = DriveInfo.GetDrives();
-
-        Diskinfo f = new Diskinfo();
-
-        foreach (DriveInfo drive in drives)
-        {
-          if (drive.IsReady == false)
-          {
-            continue;
-          }
-          if (drive.Name.Contains(driveletter) == true)
-          {
-            f.totalsize = drive.TotalSize;
-            f.freespace = drive.AvailableFreeSpace;
-            f.usagepercent = ((f.totalsize - f.freespace) / f.totalsize) * 100;
-            break;
-          }
-        }
-        // G表示にするべきだよね
-        f.totaosize_str = (f.totalsize / (1024 * 1024 * 1024)).ToString("F2");
-        f.totaosize_str += "G";
-        f.freespace_str = (f.freespace / (1024 * 1024 * 1024)).ToString("F2");
-        f.freespace_str += "G";
-        return f;
-      }
-
-      [SupportedOSPlatform("windows")]
-      public static MemoryInfo getMemoryInfo()
-      {
-        MemoryInfo mem = new MemoryInfo();
-
-        /*
-        *PerformanceCounter pccounter = new PerformanceCounter("Memory", "Total Physical Memory");
-        *float totalram = pccounter.NextValue();
-        *mem.totalsize = totalram;
-        // return (int)totalram;
-        */
-        // mem.totalsize = GC.GetTotalMemory(false);
-        win32api.MEMORY_INFO mi = new win32api.MEMORY_INFO();
-        mi.dwLength = (uint)System.Runtime.InteropServices.Marshal.SizeOf(mi);
-        win32api.GlobalMemoryStatusEx(ref mi);
-        mem.totalsize = mi.ullTotalPhys;
-
-        PerformanceCounter pcounter = new PerformanceCounter();
-        pcounter.CounterName = "% Committed Bytes In Use";
-        pcounter.CategoryName = "Memory";
-        float ramusage = pcounter.NextValue();
-        mem.usagepercent = ramusage;
-
-        mem.freespace = (mem.totalsize * ((100 - mem.usagepercent) / 100));
-        mem.totalsize_str = (mem.totalsize / (1024 * 1024 * 1024)).ToString("F2");
-        mem.totalsize_str += "G";
-        mem.freespace_str = (mem.freespace / (1024 * 1024 * 1024)).ToString("F2");
-        mem.freespace_str += "G";
-
-        return mem;
-      }
-
-      [SupportedOSPlatform("windows")]
-      public static bool regstryKeyExist(string arg)
-      {
-        // https://social.msdn.microsoft.com/Forums/azure/zh-CN/353210bd-02fd-4975-b431-3294439ab4d6/visual-c-redistributable?forum=AzureFunctions
-        Microsoft.Win32.RegistryKey regkey = Microsoft.Win32.Registry.LocalMachine
-          .OpenSubKey(@"SOFTWARE\Classes\Installer\Products\1af2a8da7e60d0b429d7e6453b3d0182");
-        if (regkey == null)
-        {
-          return false;
-        }
-        return true;
-
-        // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Installer\Products\1af2a8da7e60d0b429d7e6453b3d0182
-      }
-    }
 
     public enum enum_RegistryRoot
     {
@@ -1258,469 +1029,6 @@ namespace saltstone
     }
 
 
-    public class Files
-    {
-      public const int MAX_PATH = 260;
-
-      public enum Filesearchmode
-      {
-        fileonly,
-        directoryonly,
-        all
-      }
-      public static string getlastdirectoryname(string path)
-      {
-        return new DirectoryInfo(System.IO.Path.GetDirectoryName(path)).Name;
-
-      }
-
-      public static string getfilepath(string file)
-      {
-        string buff;
-        if (Files.exist(file, Utils.Files.Filesearchmode.fileonly) == true)
-        {
-          buff = System.IO.Path.GetDirectoryName(file);
-        }
-        else if (Files.exist(file, Utils.Files.Filesearchmode.directoryonly) == true)
-        {
-          buff = file;
-        }
-        else
-        {
-          buff = "";
-        }
-        return buff;
-      }
-
-      public static List<string> getdirectory(string path)
-      {
-        // ディレクトリの存在チェック
-        if (Directory.Exists(path) == false)
-        {
-          // 空のリストを返す
-          return new List<string>();
-        }
-
-        IEnumerable<string> e = Directory.EnumerateDirectories(path, "*", SearchOption.TopDirectoryOnly);
-        return e.ToList();
-
-      }
-
-
-      /// <summary>
-      /// 指定されたディレクトリ内のファイルを検索し、listで返す
-      /// </summary>
-      /// <param name="path"></param>
-      /// <returns></returns>
-      public static List<string> getFiles(string path)
-      {
-        if (Directory.Exists(path) == false)
-        {
-          return new List<string>();
-        }
-        string[] fsary = Directory.GetFiles(path);
-        List<string> fs = new List<string>(fsary);
-        return fs;
-      }
-
-
-
-
-      public static string getfilename(string path)
-      {
-        return Path.GetFileName(path);
-      }
-
-
-      public static string getbasename(string path)
-      {
-        return Path.GetFileNameWithoutExtension(path);
-      }
-
-
-      public static string getextention(string path)
-      {
-        // pathチェックはスキップする
-
-        // if (fileexist(path) == false)
-        // {
-        //   return "";
-        // }
-        // \nが入っているとエラー
-        string buff = path.Replace("\n", "");
-        return Path.GetExtension(buff).ToLower();
-        // string f = getfilename(path);
-
-      }
-
-      // 作成したtempファイル・dirを保存
-      // app exit時に削除するため
-      public static List<string> tempfiles;
-
-
-      public static string getHash(string file)
-      {
-        // hashはファイルを全部走査して計算する
-        // 大きいファイルの場合は時間がかかる
-        // れいむ.zipで2.5M
-        byte[] hashbyte;
-        string ret = "";
-        FileStream stream = null;
-        SHA256 sha = null;
-        try
-        {
-          stream = File.OpenRead(file);
-          sha = SHA256.Create();
-          hashbyte = sha.ComputeHash(stream);
-          ret = Convert.ToBase64String(hashbyte);
-        }
-        finally
-        {
-          if (stream != null)
-          {
-            stream.Dispose();
-            stream = null;
-          }
-          if (sha != null)
-          {
-            sha.Dispose();
-            sha = null;
-          }
-        }
-        return ret;
-      }
-
-
-      public static bool exist(string path, Filesearchmode mode = Filesearchmode.all)
-      {
-        // ディレクトリがある場合は失敗する
-        // modeで切り替えできるようにしておく
-        bool fret = File.Exists(path);
-        if (mode == Filesearchmode.fileonly)
-        {
-          return fret;
-        }
-        bool dret = Directory.Exists(path);
-        if (mode == Filesearchmode.directoryonly)
-        {
-          return dret;
-        }
-        return fret | dret;
-
-
-
-      }
-
-      public static bool existDirectory(string path)
-      {
-        return Directory.Exists(path);
-      }
-
-      public static long getFileSize(string file)
-      {
-        if (file.Length == 0)
-        {
-          return 0;
-        }
-        if (Files.exist(file) == false)
-        {
-          return 0;
-        }
-        FileInfo f = new FileInfo(file);
-        return f.Length;
-      }
-
-      public static bool Copy(string source, string dest)
-      {
-        try
-        {
-          // overrite true
-          System.IO.File.Copy(source, dest, true);
-        }
-        catch (Exception e)
-        {
-          string buff = e.Message;
-          return false;
-        }
-
-        return true;
-
-      }
-
-      public enum enum_rsyncoverrite
-      {
-        overrite,
-        nooverrite,
-        showmessage
-
-      }
-      public enum enum_rsync_nomessage
-      {
-        nomessage,
-        showmessage
-      }
-
-      [SupportedOSPlatform("windows")]
-      public static bool rsync(string path, string dest, enum_rsyncoverrite option = enum_rsyncoverrite.showmessage)
-      {
-        // enum_rsyncoverrite opt = enum_rsyncoverrite.showmessage;
-        enum_rsyncoverrite opt = option;
-        bool ret = rsync(path, dest, ref opt);
-        return true;
-      }
-
-      [SupportedOSPlatform("windows")]
-      public static bool rsync(string path, string dest, ref enum_rsyncoverrite option)
-      {
-        // recursiveでディレクトリを含めコピー
-        // 最新のものがあれば上書き
-        // 上書き確認 messeageboxを表示
-
-        // なぜか複数タスクとして別々に動作しているっぽいよなー
-
-
-        // pathの正規化 /*は不要 ディレクトリ名であることを確認
-        // destも同様
-        // Get information about the source directory
-        if (existDirectory(path) == false)
-        {
-          return false;
-        }
-        // destは同じ名前か？それとも親か？
-        string srcbase = getbasename(path);
-        string dstbase = getbasename(dest);
-        string srcdir = path;
-        string destdir = dest; // コピー先のdir 含むsrcのディレクトリ名前
-        if (srcbase != dstbase)
-        {
-          destdir += "\\" + srcbase;
-        }
-
-        DirectoryInfo srcinfo = new DirectoryInfo(srcdir);
-
-        // Check if the source directory exists
-
-        // Cache directories before we start copying
-        DirectoryInfo[] srcdirs = srcinfo.GetDirectories();
-
-        string buff;
-        // Create the destination directory
-        Utils.Files.mkdir(destdir);
-        foreach (DirectoryInfo d in srcdirs)
-        {
-          buff = destdir + "\\" + d.Name;
-          Utils.Files.mkdir(buff);
-        }
-
-        bool overwrite = false;
-        // 上書き確認のメッセージ表示のフラグ（初回のみ）
-        bool showoverrite = true;
-        bool force_no_overwrite = false;
-        if (option == enum_rsyncoverrite.overrite)
-        {
-          overwrite = true;
-          showoverrite = false;
-        }
-        if (option == enum_rsyncoverrite.nooverrite)
-        {
-          force_no_overwrite = true;
-          showoverrite = false;
-        }
-
-        // Get the files in the source directory and copy to the destination directory
-        foreach (FileInfo f in srcinfo.GetFiles())
-        {
-          string targetFilePath = Path.Combine(destdir, f.Name);
-          // file timestampを比較 最新なら上書き
-          if (exist(targetFilePath) == false)
-          {
-            f.CopyTo(targetFilePath);
-            continue;
-          }
-          if (force_no_overwrite == true)
-          {
-            continue;
-          }
-          if (showoverrite == true)
-          {
-            // 
-            overwrite = Utils.Message.inquiry("同名ファイルが存在します。新しい場合に上書きしますか？");
-            if (overwrite == true)
-            {
-              showoverrite = false;
-              option = enum_rsyncoverrite.overrite;
-
-            }
-            else
-            {
-              option = enum_rsyncoverrite.nooverrite;
-            }
-          }
-          if (overwrite == false)
-          {
-            continue;
-          }
-          // 同名ファイルがあった場合、どう処理するか？
-          // 上書きするか？　タイムスタンプを比較して更新するか？
-
-          // 同じ名前のファイルが存在している
-          // 日付をチェック 最新なら上書き？もしくは無条件上書き？
-          // 確認する必要あるか？
-          FileInfo newf = new FileInfo(targetFilePath);
-          if (f.LastWriteTime < newf.LastWriteTime)
-          {
-            // overrite
-            f.CopyTo(targetFilePath, true);
-          }
-        }
-
-        bool ret = false;
-        // If recursive and copying subdirectories, recursively call this method
-        foreach (DirectoryInfo subDir in srcdirs)
-        {
-          string newDestinationDir = Path.Combine(destdir, subDir.Name);
-          /*          enum_rsyncoverrite opt = enum_rsyncoverrite.overrite;
-                    if (overwrite == false)
-                    {
-                      opt = enum_rsyncoverrite.nooverrite;
-                    }
-                    if (showoverrite == true)
-                    {
-                      opt = enum_rsyncoverrite.showmessage;
-                    }
-          */
-          ret = rsync(subDir.FullName, newDestinationDir, ref option);
-          if (ret == false)
-          {
-            return false;
-          }
-        }
-        return true;
-      }
-
-
-      public static string createTemp()
-      {
-        string buff = Path.GetTempFileName();
-        if (tempfiles == null)
-        {
-          tempfiles = new List<string>();
-        }
-        tempfiles.Add(buff);
-        return buff;
-      }
-
-      public static void Dispose()
-      {
-        if (tempfiles == null)
-        {
-          return;
-        }
-        foreach (string s in tempfiles)
-        {
-          Files.delete(s);
-          Files.rmdir(s);
-        }
-        Files.tempfiles.Clear();
-        Files.tempfiles = null;
-      }
-
-      public static string createTempDirectory()
-      {
-        string fname = createTemp();
-        Utils.Files.delete(fname);
-        Utils.Files.mkdir(fname);
-        return fname;
-      }
-
-      public static bool rename(string source, string dest)
-      {
-        // TODO destの存在チェック
-        System.IO.File.Move(source, dest);
-        return true;
-      }
-
-      public static bool rmdir(string path)
-      {
-        if (Files.exist(path, Filesearchmode.directoryonly) != true)
-        {
-          return false;
-        }
-        delete(path);
-        DirectoryInfo dir = new DirectoryInfo(path);
-        dir.Delete();
-        return true;
-      }
-
-      public static bool delete(string path)
-      {
-        try
-        {
-          // TODO pathがディレクトリの場合、内部はdelするが、path自体は残る
-          if (Files.exist(path, Filesearchmode.directoryonly) == true)
-          {
-            DirectoryInfo dir = new DirectoryInfo(path);
-            foreach (FileInfo f in dir.GetFiles())
-            {
-              f.Delete();
-            }
-            foreach (DirectoryInfo d in dir.GetDirectories())
-            {
-              delete(d.FullName);
-              try
-              {
-                d.Delete(true); // recursive
-              }
-              catch (Exception e)
-              {
-                string msg = e.Message;
-              }
-            }
-            // dir.Delete(); // 元ディレクトリも削除する -> rmdirで呼び出し元から削除する
-          }
-          else if (Files.exist(path, Filesearchmode.fileonly) == true)
-          {
-            File.Delete(path);
-          }
-
-        }
-        catch (Exception e)
-        {
-          string buff = e.Message;
-          return false;
-        }
-        return true;
-      }
-
-      public static string getExeVersion(string exepath)
-      {
-        if (Utils.Files.exist(exepath) == false)
-        {
-          return "null";
-        }
-        System.Diagnostics.FileVersionInfo verinfo = FileVersionInfo.GetVersionInfo(exepath);
-        string ver = verinfo.FileVersion;
-        return ver;
-      }
-
-      public static bool mkdir(string argdir)
-      {
-        if (argdir == null)
-        {
-          return false;
-        }
-        // dirが存在する場合にはtrueをreturn
-        // ない場合にはmkdirし、falseをreturn
-        if (Files.exist(argdir, Filesearchmode.directoryonly) == true)
-        {
-          return true;
-        }
-        Directory.CreateDirectory(argdir);
-
-        return false;
-      }
-
-    }
 
     [SupportedOSPlatform("windows")]
     public static bool setWindowForground(Form mainform)
@@ -1735,7 +1043,7 @@ namespace saltstone
       {
         int processid = System.Diagnostics.Process.GetCurrentProcess().Id;
         win32api.AllowSetForegroundWindow(processid);
-        Utils.sleep(500);
+        sleep(500);
         if (mainform != null)
         {
           // やはり動かない？
@@ -1747,9 +1055,9 @@ namespace saltstone
           // setforgroundは動いているっぽいんだけど
           // browserのほうが優先される？
 
-          Utils.sleep(10);
+          sleep(10);
         }
-        IntPtr activewinp = Utils.getForgroundWindow();
+        IntPtr activewinp = getForgroundWindow();
         if (activewinp == mainform.Handle)
         {
           ret = true;
@@ -1781,7 +1089,7 @@ namespace saltstone
       // 環境によってはpingを通していない
       // httpが通ればよい
       // string url = SaltstoneSetup.Properties.Resources.webconnect;
-      string url = Utils.webconnecturl;
+      string url = webconnecturl;
       // System.Net.WebRequest req = System.Net.WebRequest.Create(url);
       HttpClient req = new HttpClient();
       using (Task<HttpResponseMessage> reqret = req.GetAsync(url))

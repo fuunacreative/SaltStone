@@ -9,7 +9,10 @@ using System.Drawing;
 // saltstone c++ dll interface
 namespace saltstone
 {
-  public class BitmapST : BitmapInfo,IDisposable
+  /// <summary>
+  ///  salt stone 用のbitmap class
+  /// </summary>
+  public class SLibBitmap : BitmapInfo,IDisposable
   {
 
     [DllImport("imaging.dll", EntryPoint = "clipping")]
@@ -23,7 +26,7 @@ namespace saltstone
     string filename; // filenameが指定されている場合
     Bitmap imgbitmap; // bitmapが作成された場合
 
-    public BitmapST(string filename)
+    public SLibBitmap(string filename)
     {
       this.filename = filename;
       setBitmap(filename);
@@ -47,7 +50,8 @@ namespace saltstone
       return ret;
     }
 
-    public bool getClipping(out Bitmap outbmp)
+
+    unsafe public bool getClipping(out Bitmap outbmp)
     {
       // これは chara partsのここのファイル（レイヤー）から呼びされるもの
       // ファイル名の保管もcharapartsで行う
@@ -57,7 +61,7 @@ namespace saltstone
 
       outbmp = null;
       // src=this dst=outbmp
-      if (data == IntPtr.Zero)
+      if (data == null)
       {
         return false;
       }
@@ -73,7 +77,10 @@ namespace saltstone
       Rectangle rect = new Rectangle(0, 0, dst.width, dst.height);
       System.Drawing.Imaging.BitmapData bmpData =
          outbmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, outbmp.PixelFormat);
-      Utils.memory.copy(dst.data, bmpData.Scan0, bmpData.Stride * dst.height);
+
+      datalength = bmpData.Stride * dst.height;
+      Copy(bmpData.Scan0);
+      // Utils.memory.copy(dst.data, bmpData.Scan0, );
       outbmp.UnlockBits(bmpData);
 
       dst.Dispose();

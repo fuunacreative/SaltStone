@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>saltstone</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -18,8 +18,7 @@
     <ProjectReference Include="..\ReadJEnc\ReadJEnc.csproj" />
     <ProjectReference Include="..\SalststoneCharaLibrary\SalststoneLibrary.csproj" />
     <ProjectReference Include="..\SLibChara\SLibChara.csproj" />
-    <ProjectReference Include="..\sqlite\sqlite.csproj" />
-    <ProjectReference Include="..\Utils\Utils.csproj" />
+    <ProjectReference Include="..\SLibMemory\SLibMemory.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="pg_icon.ico" />

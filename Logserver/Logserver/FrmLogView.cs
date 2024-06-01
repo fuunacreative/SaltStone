@@ -75,9 +75,12 @@ namespace saltstone
       {
 
         lstLog.Invoke(new Action(() => { lstLog.AutoResizeColumns(); }));
+        lstLog.Invoke(new Action(() => { lstLog.Refresh(); }));
         return;
       }
       this.lstLog.AutoResizeColumns();
+      // なぜか１回の送信で２個表示される
+      this.lstLog.Refresh();
     }
 
     private void testToolStripMenuItem_Click(object sender, EventArgs e)

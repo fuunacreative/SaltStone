@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO.MemoryMappedFiles;
 
 // memory mapped file
-namespace saltstone
+namespace Utils
 {
   public static class SLMemoryMappedFile
   {

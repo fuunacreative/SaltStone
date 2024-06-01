@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace saltstone
+namespace Utils
 {
   public class SLibProgressbar
   {
@@ -107,7 +107,7 @@ namespace saltstone
       {
         pBar.Value = barVal;
         pBar.Update();
-        Utils.sleep(10);
+        Util.sleep(10);
       }
       catch (Exception e)
       {

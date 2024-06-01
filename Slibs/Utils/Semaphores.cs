@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 
 // セマフォを一元管理するクラス
-namespace saltstone
+namespace Utils
 {
   public static class Semaphores
   {

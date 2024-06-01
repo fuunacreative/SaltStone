@@ -13,7 +13,7 @@ using System.Threading;
 // _tasksallをさわる時はlockをかけているはずだが、、、
 
 // threadを一括管理するクラス
-namespace saltstone
+namespace Utils
 {
   public static class STasks
   {

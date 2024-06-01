@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using Utils;
 
 // drawruleを設定したら、compositeorderとhiddenpartsidが決まる
 // drawrule tableのorderid -> ruleのをdictionaryで保存する仕組みが必要
@@ -298,7 +299,7 @@ namespace saltstone
     {
       // bool ret = pMutexBacktask.lockmutex();
       modelpicture = null;
-      if (Utils.Files.exist(modelpicture_filename) == true)
+      if (Utils.Utils.Files.exist(modelpicture_filename) == true)
       {
         modelpicture = Image.FromFile(modelpicture_filename);
       }
@@ -308,7 +309,7 @@ namespace saltstone
       {
         string path = charadir + @"\全";
         string searchfile = "*.png";
-        List<string> pngf = Utils.searchfile(path, searchfile);
+        List<string> pngf = Utils.Utils.searchfile(path, searchfile);
         string png = "";
         if (pngf.Count > 0)
         {
@@ -318,7 +319,7 @@ namespace saltstone
         if (png == "")
         {
           path = charadir + @"\体";
-          pngf = Utils.searchfile(path, searchfile);
+          pngf = Utils.Utils.searchfile(path, searchfile);
           if (pngf.Count > 0)
           {
             png = pngf.First();
@@ -589,7 +590,7 @@ PRIMARY KEY("id" AUTOINCREMENT)
     {
 
       string setfpath = charadir + "\\" + CharaPortraits.CONST_partsfile; // セット.txtを解析
-      if (Utils.Files.exist(setfpath) == false)
+      if (Utils.Utils.Files.exist(setfpath) == false)
       {
         return false;
       }
@@ -603,7 +604,7 @@ PRIMARY KEY("id" AUTOINCREMENT)
       q.where("charaid", charaid);
       Charas.charadb.delete(q);
 
-      string alltext = Utils.readAllText(setfpath);
+      string alltext = Utils.Utils.readAllText(setfpath);
       List<string> lines = new List<string>(alltext.Replace("\r\n", "\n").Split(new[] { '\n', '\r' }));
       string sectionname = "";
       string buff;
@@ -665,11 +666,11 @@ PRIMARY KEY("id" AUTOINCREMENT)
       // outディレクトリへ出力する
 
       string setfpath = charadir + "\\" + CharaPortraits.CONST_setfname; // セット.txtを解析
-      if (Utils.Files.exist(setfpath) == false)
+      if (Utils.Utils.Files.exist(setfpath) == false)
       {
         return false;
       }
-      string alltext = Utils.readAllText(setfpath);
+      string alltext = Utils.Utils.readAllText(setfpath);
       // 一行ごとに処理
       // public const string table_charaset = "charaset"; // セット.txt outディレクトリ内のpngを含む
       // id , charaid(れいむ) , setnum(int 123など) , partsstr(顔00-眉04-目00-口06-体00) , filename(out/*.png)
@@ -689,7 +690,7 @@ PRIMARY KEY("id" AUTOINCREMENT)
       string[] parts; // 顔00-眉08-目00-口02-体00を切り分けたリスト
 
       // charaidを切り出し
-      string charaid = Utils.Files.getfilename(charadir); // 最後のサブディレクトリ名をキャラIDとして使用する
+      string charaid = Utils.Utils.Files.getfilename(charadir); // 最後のサブディレクトリ名をキャラIDとして使用する
 
       // charasetのれいむを削除
       DB.Query q = new DB.Query(Charas.table_charaset);

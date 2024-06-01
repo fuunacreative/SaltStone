@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using Windows.Devices.Perception.Provider;
 
 namespace saltstone
 {
@@ -23,7 +24,7 @@ namespace saltstone
     public int width;
     public int height;
     public int datalength;
-    public IntPtr data = IntPtr.Zero;
+    unsafe public void* data = null;
     // これ以降はc++に渡したくない 
     // getter setter or pointer? or another class inherit?
     // https://stackoverflow.com/questions/68260141/exclude-extra-private-field-in-struct-with-layoutkind-explicit-from-being-part-o
@@ -40,15 +41,48 @@ namespace saltstone
       // 中身をコピーする
       width = arg.width;
       height = arg.height;
-      data = Utils.memory.alloc(arg.datalength);
+      // data = Utils.Memory.alloc(arg.datalength);
+      // native memoryを使うしかないのかな？
+      Alloc(arg.datalength);
+
       datalength = arg.datalength;
     }
 
-    public void Dispose()
+  public void Dispose()
     {
-      Utils.memory.free(data);
+      // Utils.memory.free(data);
+      Free();
     }
 
+    unsafe public void Alloc(int len)
+    {
+      Free();
+      data = SLibMemory.Memory.Alloc(len);
+    }
+
+    unsafe public void Free()
+    {
+      if (data != null)
+      {
+        SLibMemory.Memory.Free(data);
+      }
+    }
+
+    /// <summary>
+    /// argからmemger dataへmember datalength分をmemory copyする
+    /// </summary>
+    /// <param name="arg"></param>
+    unsafe public void Copy(IntPtr arg)
+    {
+      SLibMemory.Memory.Copy(data, arg, datalength);
+    }
+
+    /// <summary>
+    /// argのbitmapから dataへコピーする
+    /// 高速化のため native memoryを利用している
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public bool setBitmap(Bitmap arg)
     {
       width = arg.Width;
@@ -65,10 +99,12 @@ namespace saltstone
       
       datalength = Math.Abs(bmpData.Stride) * height;
       // 一応、managed memoryに直接c++からアクセスさせたくないのでコピーしておく
-      Utils.memory.free(data); // dataが確保されている場合を考慮し、いったんクリア
-      data = Utils.memory.alloc(datalength);
+      
+      // dataが確保されている場合を考慮し、いったんクリア
+      Free();
+      Alloc(datalength);
       // Utils.win32api.CopyMemory(ptr, data, (uint)datalength);
-      Utils.memory.copy(ptr, data, datalength);
+      Copy(ptr);
       // Utils.win32api.CopyMemory(ptr, data, (uint)datalength);
       arg.UnlockBits(bmpData);
 

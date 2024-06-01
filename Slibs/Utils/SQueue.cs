@@ -9,7 +9,7 @@ using System.Runtime.Versioning;
 
 // ququqとsemphore排他ロックを取りまとめる
 // que obj(que + sem) とsqueをまとめて管理するque manager class
-namespace saltstone
+namespace Utils
 {
   public class SQueue<T> : IDisposable
   {
@@ -108,7 +108,7 @@ namespace saltstone
       }
       while (true)
       {
-        Utils.sleep(100);
+        Util.sleep(100);
         if (ct.IsCancellationRequested == true)
         {
           return;
@@ -116,13 +116,13 @@ namespace saltstone
         bool ret = Semaphores.waitone(sem_addqueue,Semaphores.enum_SemaphoreWait.NoLimit);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         ret = Semaphores.waitone(sem_lockqueue);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         while (_queue.Count > 0)

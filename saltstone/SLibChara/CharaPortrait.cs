@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace saltstone
 {
@@ -41,9 +42,9 @@ namespace saltstone
     public bool isExistHash(string filename)
     {
       // fullpath -> filename
-      string fname = Utils.Files.getfilename(filename);
+      string fname = Files.getfilename(filename);
 
-      string hash = Utils.Files.getHash(fname);
+      string hash = Files.getHash(fname);
       DB.Query q = Charas.charadb.newQuery(CharaPortraits.table_charapicture);
       q.where("hash", hash);
       q.select = "hash";

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 // IPCじゃないから、たぶん不要 dllを使うだけならね
 
-namespace saltstone
+namespace Utils
 {
   public class SMutex : IDisposable
   {
@@ -105,7 +105,7 @@ namespace saltstone
       }
       catch (Exception ex)
       {
-        saltstone.Logs.write(ex);
+        Logs.write(ex);
         // throw new Exception(ex.Message);
       }
       return true;

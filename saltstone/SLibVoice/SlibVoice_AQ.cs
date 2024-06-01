@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MeCab.Core;
+using System;
+using Utils;
 
 namespace saltstone
 {
@@ -27,7 +25,7 @@ namespace saltstone
     // public SlibPhonetic_AQ convPhonetic;
 
     public exMemoryFile<AqcmdMemstrucure> mf;
-    public SNamespipeClient npc;
+    public SNamedpipeClient npc;
 
 
     public override void init()
@@ -40,10 +38,10 @@ namespace saltstone
       if (string.IsNullOrEmpty(exefilename) == false)
       {
         // exeが実行されているかcheck
-        bool ret = Utils.checkrunexe(exefilename);
+        bool ret = Util.checkrunexe(exefilename);
         if(ret == false)
         {
-          Utils.runexec(exefilename, "", Utils.enum_runmode.start_async, Utils.enum_runwinfront.background);
+          Util.runexec(exefilename, "", Util.enum_runmode.start_async, Util.enum_runwinfront.background);
 
         }
       }
@@ -148,7 +146,7 @@ namespace saltstone
         }
         if (amem.resultcode == null)
         {
-          Utils.sleep(10);
+          Util.sleep(10);
           cnt += 1;
           // debugだとうまく動くが、exeにすると作成されない？
           // TODO 2024/01/08 wavを作成するnpcサーバーが動いていないっぽい

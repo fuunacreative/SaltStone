@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Utils;
 
 namespace saltstone
 {
@@ -300,7 +301,7 @@ namespace saltstone
 
     public void init_background()
     {
-      Utils.sleep(10);
+      Util.sleep(10);
       // キャラ定義に含まれている or exedirにある描画順を解析
       // taskの状況によりcompositeorders collectionが初期化されていない <- 以下の処理が実行されていない
 

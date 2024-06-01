@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace saltstone
 {
@@ -11,7 +12,7 @@ namespace saltstone
 
     public override bool validate(string filename)
     {
-      string fext = Utils.Files.getextention(filename);
+      string fext = Files.getextention(filename);
       if (fext != ".psd")
       {
         return false;
@@ -27,7 +28,7 @@ namespace saltstone
       // 先頭のヘッダ"8BPS0001"であれば有効とみなす
       // free の psd libraryはないっぽい
       // utils binary reader
-      byte[] header = Utils.binaryFile.getByteData(filename, 6);
+      byte[] header = Util.binaryFile.getByteData(filename, 6);
       // headerが"8BPS0001"と同じかどうか、どうやって判定するの？
       byte[] psdheader = { (byte)'8', (byte)'B', (byte)'P', (byte)'S', 0x00, 0x01 };
       bool bret = psdheader.SequenceEqual<byte>(header);

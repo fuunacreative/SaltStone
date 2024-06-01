@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
-using System.IO;
+using Utils;
 
 
 // pginiとenvini inifileとの違いは？
@@ -44,7 +39,7 @@ namespace saltstone
     public bool load()
     {
       //string execdir = Utils.getexepath("aaa");
-      string execdir = Utils.getexecdir();
+      string execdir = Util.getexecdir();
       string inif = execdir + "\\" + settingfile;
       // pg.iniを読み込む
       // レジストリに登録してwinでglobal化する

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FNF.Utility;
 using System.Data;
 using System.Windows.Forms;
+using Utils;
 // using System.Windows.Forms;
 // using System.Data.SQLite;
 // globalsにsqliteいるか？
@@ -129,7 +129,7 @@ namespace saltstone
     public static void init(ToolStripStatusLabel lblmes, ToolStripProgressBar pgbar)
     {
       Globals.init();
-      Logs.messagectl = new MsgControl(lblmes, pgbar);
+      Logs.messsagectl = new MsgControl(lblmes, pgbar);
 
     }
 
@@ -200,10 +200,9 @@ namespace saltstone
       // log serverの場合はwriterはopen不要
       // どうやって判断するか？
       Logs.init();
-
-      mmf.init();
+      SLMemoryMappedFile.init();
       _dispose = new List<Action>();
-      _dispose.Add(mmf.Dispose);
+      _dispose.Add(SLMemoryMappedFile.Dispose);
 
       // logmanager.exeが起動されていなければ起動する
 
@@ -227,7 +226,7 @@ namespace saltstone
       string buff = envini[PGInifile.INI_SettingDB];
       if (buff.Length == 0)
       {
-        buff = Utils.getexecdir() + "\\" + SettingDB;
+        buff = Util.getexecdir() + "\\" + SettingDB;
         envini[PGInifile.INI_SettingDB] = buff;
       }
       DB.Sqlite db = new DB.Sqlite(buff);

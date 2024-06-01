@@ -1,7 +1,9 @@
-﻿using System;
+﻿using saltstone;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -29,7 +31,7 @@ exeini -> exename.ini
 最近のはやりはxmlファイルでsettingを書くこと -> xmlファイルは可読性がよくないので使わない
  */
 
-namespace saltstone
+namespace Utils
 {
   /// <summary>
   /// jsonファイルに保存する log message情報
@@ -40,6 +42,19 @@ namespace saltstone
   [Serializable()]
   public class Logs : INamedpipedata
   {
+
+    public enum enum_logwritemode
+    {
+      namedpipe,
+      file
+    }
+    /// <summary>
+    /// log wirteをnamedpileにするか、file書き込みonlyにするか？
+    /// file書き込みモードではlog serverでファイルを監視し、awsへupする
+    /// namedpipeでうまく送信できないためと、仕組を簡単にするため
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public enum_logwritemode Logwritemode;
 
 
     /// <summary>
@@ -56,6 +71,11 @@ namespace saltstone
     /// named pipe clientはprivateにして開きっぱなしにする
     /// </summary>
     private static SNamedpipeClient cpipe = null;
+
+    /// <summary>
+    /// formへlog outするためのcontrol , status label  + progress bar  (toolstrip)
+    /// </summary>
+    public static MsgControl messsagectl;
 
 
     public enum Logtype
@@ -170,13 +190,15 @@ namespace saltstone
     public Logs()
     {
       logtype = Logtype.info;
-      logdate = Utils.getNowDatetime();
+      logdate = Util.getNowDatetime();
       exename = "";
       exever = "";
       message = "";
       method = "";
       sourcefile = "";
       trace = "";
+      // defaultでfile書き込みだけにする。 namedpipeを使っての送信は行わない
+      Logwritemode = enum_logwritemode.file;
     }
 
     public Logs(Exception ex) : this()
@@ -252,7 +274,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       return true;
     }
 
-    // TODO logserverのexeがあればnamed pipeでsend、なければfile writeする
+    // logserverのexeがあればnamed pipeでsend、なければfile writeする
     // 検討事項：名前を何にするか？ sendで named pipe write or file write する
     // 検討事項：namedpipeで何を送信するか？ jsonfile or serialized_log?
 
@@ -273,7 +295,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
 
 
 
-      // TODO named pipe + json fileを使い、send処理を行う
+      // named pipe + json fileを使い、send処理を行う
 
 
       string buff = JsonSerializer.Serialize(this);
@@ -322,16 +344,16 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       //  cpipe.connect();
       //  cpipe.send(l);
       //}
-      cpipe.connect();
+      // cpipe.connect();
       cpipe.send(l);
 
       return true;
     }
 
-    public bool write()
+    public  bool write()
     {
       // logfile nameを作成する
-      // exedir\logs\20240101_1000.txt
+      // exedir\logs\20240101_102134.txt
       string logf = Utils.Sysinfo.getLogfile();
       Logs.logfile = logf;
 
@@ -352,15 +374,16 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       }
 
       // utilsからslib　slibglobalを参照したくない。　
-      string buff = getlogtext();
-      using (StreamWriter fs = new StreamWriter(logf, true, Utils.getEncodingUTF8()))
+      // string buff = getlogtext();
+      string buff = JsonSerializer.Serialize(this);
+      using (StreamWriter fs = new StreamWriter(logf, true, Util.getEncodingUTF8()))
       {
         fs.WriteLineAsync(buff);
       }
 
       if (string.IsNullOrEmpty(trace) == false)
       {
-        using (StreamWriter fs = new StreamWriter(tracefile, true, Utils.getEncodingUTF8()))
+        using (StreamWriter fs = new StreamWriter(tracefile, true, Util.getEncodingUTF8()))
         {
           fs.WriteAsync(trace);
         }
@@ -369,6 +392,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
 
       return true;
     }
+
 
     public static bool write(string arg)
     {
@@ -381,7 +405,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       string buff = getlogtext(arg);
 
       // StreamWriter は、特に指定がない限り、 のインスタンスを UTF8Encoding 使用するように既定で設定されます。
-      using (var fs = new StreamWriter(logfile, true, Utils.getEncodingUTF8()))
+      using (var fs = new StreamWriter(logfile, true, Util.getEncodingUTF8()))
       {
         fs.WriteLineAsync(buff);
       }
@@ -397,6 +421,17 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       return true;
     }
 
+
+    public static bool write(string arg,Logs.Logtype arg_logtype) 
+    {
+      Logs l = new Logs();
+      l.logtype = arg_logtype;
+      l.message = arg;
+      l.write();
+      
+      return true;
+    }
+
     public static bool write(string arg, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
     {
       if (Logs.logfile != null)
@@ -405,7 +440,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       }
       string buff = getlogtext(arg, memberName, sourceLineNumber);
 
-      using (var fs = new StreamWriter(logfile, true, Utils.getEncodingUTF8()))
+      using (var fs = new StreamWriter(logfile, true, Util.getEncodingUTF8()))
       {
         fs.WriteLineAsync(buff);
       }
@@ -420,7 +455,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       // log内容
       // logdate ,loglevel , exename ,ver ,  message , errorsourceloc , trace
       Logs lbuff = new Logs();
-      lbuff.logdate = Utils.getNowDatetime();
+      lbuff.logdate = Util.getNowDatetime();
       lbuff.exename = Utils.Sysinfo.getExeName();
       lbuff.logtype = Logtype.error;
       lbuff.message = arg;
@@ -435,13 +470,12 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
       // log fileに書き出す line textを編集する
       // buff += logtype.ToString();
 
-      // TODO buffを組み立てる前に、properyを設定する
       // exename-> 設定がなければ現在実行中のものをセットなど
       buff += Enum.GetName(typeof(Logtype), logtype);
       buff += ",";
       if (logdate == null || logdate.Length == 0)
       {
-        logdate = Utils.getNowDatetime();
+        logdate = Util.getNowDatetime();
       }
       buff += logdate;
       buff += ",";
@@ -544,7 +578,7 @@ C:\\Users\\yasuhiko\\source\\saltstone\\Logmanager_test\\LogManager_test\\Form1.
     private static void checkLogserver()
     {
       _startLogmanager = false;
-      bool ret = Utils.checkrunexe(_logserer_exename);
+      bool ret = Util.checkrunexe(_logserer_exename);
       if (ret == true)
       {
         _startLogmanager = true;

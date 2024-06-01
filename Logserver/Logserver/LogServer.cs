@@ -20,6 +20,12 @@ namespace saltstone
 
     SNamedpipeServer _pipeserver;
 
+    /// <summary>
+    /// log file 監視 object
+    /// </summary>
+    public System.IO.FileSystemWatcher watcher;
+
+    public Dictionary<int, string> _logfiles;
 
     // log managerへ表示を行うためのdelegate
     // public delegate void del_displog(IPCLog l);
@@ -40,6 +46,10 @@ namespace saltstone
     {
       // ipcサーバのクローズはしなくてもよさそう
       // _logqueue.Dispose();
+      _logfiles?.Clear();
+      _logfiles = null;
+      watcher?.Dispose();
+      watcher = null;
     }
 
     public bool initServer()
@@ -62,8 +72,18 @@ namespace saltstone
       // read loopは別スレッドじゃないとだめなのでは？
 
       // string id = STasks.createTask(readloop);
-      _pipeserver.evt_pipereaded += evt_piperecieve;
+      // pipeserver initServerでdelegateを登録しているのでskip
+      // _pipeserver.evt_pipereaded += evt_piperecieve;
       _pipeserver.proctask();
+
+      string buff = Utils.Sysinfo.getLogdir();
+      watcher = new FileSystemWatcher(buff);
+      watcher.NotifyFilter = NotifyFilters.FileName;
+      watcher.Filter = "*.txt";
+      watcher.Created += waitlogfile;
+      watcher.EnableRaisingEvents = true;
+
+      _logfiles = new Dictionary<int, string>();
 
       return true;
     }
@@ -82,7 +102,49 @@ namespace saltstone
       }
     }
 
+    /// <summary>
+    /// log directoryを監視し、file createされたらaws log serverへ送る
+    /// and formへevent fireする
+    /// </summary>
+    public void waitlogfile(object sender, FileSystemEventArgs arg)
+    {
+      string fname = arg.FullPath;
+
+      // log fileと trace fileの２つ作成される
+      // traceはformにevent fireしない
+      if (fname.Contains("_trace") == true) {
+        return;
+      }
+
+      // create file , write fileで２回発生する。
+      // 一回発生は保証されていない
+      // https://teratail.com/questions/152501
+      Console.WriteLine("event");
+      // 一度、log取得したfileを記録しておく
+      if (_logfiles == null) {
+        return;
+      }
+      int i = string.GetHashCode(fname);
+      if (_logfiles.ContainsKey(i) == true) {
+        return;
+      }
+
+      using (StreamReader ss = new StreamReader(fname)) {
+        string buff = ss.ReadToEnd();
+        Logs l = new Logs();
+        l.setSerialize(buff);
+        evt_recieveLog(l);
+      }
+
+      // log処理したfileは保存しておく
+
+      _logfiles.Add(i, fname);
+
+
+    }
 
   }
+
+
 }
 

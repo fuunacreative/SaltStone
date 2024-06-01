@@ -13,7 +13,7 @@ using System.Runtime.Versioning;
 
 // memorymappedfileを統合管理するもの
 // すべてのmemorymappedfileを管理し、disposeする
-namespace saltstone
+namespace Utils
 {
   public static class MemoryFiles
   {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
+using Utils;
 // using System.Windows.Forms;
 // using System.Data.SQLite;
 // globalsにsqliteいるか？
@@ -223,7 +224,7 @@ namespace saltstone
       string buff = envini[PGInifile.INI_SettingDB];
       if (buff.Length == 0)
       {
-        buff = Utils.getexecdir() + "\\" + SettingDB;
+        buff = Util.getexecdir() + "\\" + SettingDB;
         envini[PGInifile.INI_SettingDB] = buff;
       }
       DB.Sqlite db = new DB.Sqlite(buff);

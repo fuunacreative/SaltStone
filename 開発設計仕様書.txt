@@ -39,3 +39,9 @@ vs2022 keybind
 https://qiita.com/nobushi95/items/95eb26ecff0964748e62
 コード補完がどうしてもできないな、、、
 
+
+common libraryの整理が必要
+
+utils -> どのprojectでも使用するlibrary
+Slib* -> saltstoneのみで使用するlibrary
+

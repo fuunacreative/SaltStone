@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MeCab;
+using Utils;
 
 // 名詞,一般,*,*  ,*,*,すもも,スモモ,スモモ
 // 品詞,品詞細分類1,品詞細分類2,品詞細分類

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
+using Utils;
 
 
 namespace saltstone
@@ -78,7 +79,7 @@ namespace saltstone
       }
       this.stpProgress.Value = i;
       this.stpStatus.Refresh();
-      Utils.sleep(5);
+      Utils.Utils.sleep(5);
       // this.Refresh();
     }
     
@@ -518,7 +519,7 @@ namespace saltstone
         return;
       }
       string filename = e.FullPath;
-      string ext = saltstone.Utils.Files.getextention(filename);
+      string ext = Utils.Files.getextention(filename);
       if (ext != ".zip")
       {
         return;

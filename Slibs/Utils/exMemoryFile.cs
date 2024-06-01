@@ -12,7 +12,7 @@ using static System.Windows.Forms.Design.AxImporter;
 using System.Runtime.Versioning;
 
 
-namespace saltstone
+namespace Utils
 {
   public class exMemoryFile<T> : MemoryFile
   {
@@ -72,20 +72,20 @@ namespace saltstone
         bool ret = Semaphores.waitone(sem_sharemewrite, Semaphores.enum_SemaphoreWait.NoLimit);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         ret = Semaphores.waitone(sem_sharemem);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         lockflag = true; // ロック中の状態にする -> read,writeでsem checkしない
         ret = read(out obj);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         // ここだけbaseと違ううんだよねー

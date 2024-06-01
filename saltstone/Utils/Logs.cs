@@ -25,6 +25,11 @@ namespace saltstone
       fatal = 14
     }
 
+    /// <summary>
+    /// formのstatus barへmessage を outする
+    /// </summary>
+    public static MsgControl messagectl;
+
     public string logdate {
       get; set;
     } // yyyymmdd_hhmmss
@@ -41,6 +46,10 @@ namespace saltstone
 
     public Logs.Logtype logtype;
 
+    public static void init()
+    {
+    
+    }
 
     public static bool send(string arg)
     {

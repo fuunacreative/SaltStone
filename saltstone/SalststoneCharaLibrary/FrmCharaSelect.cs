@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Utils;
+
 
 // キャラdirのoutのファイルを読み込み、listviewにlargiconで表示
 // パーツ番号を調べるのに使う

@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Versioning;
 
 
-namespace saltstone
+namespace Utils
 {
   // memorymappedfile,queue,semaphoreを結びつけ
   // lockしながらqueueからとりだし、
@@ -106,13 +106,13 @@ namespace saltstone
         bool ret = Semaphores.waitone(sem_sharemewrite, Semaphores.enum_SemaphoreWait.NoLimit);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         ret = Semaphores.waitone(sem_sharemem);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         lockflag = true;
@@ -120,7 +120,7 @@ namespace saltstone
         ret = read(out obj);
         if (ret == false)
         {
-          Utils.sleep(WAIT_TaskSleep);
+          Util.sleep(WAIT_TaskSleep);
           continue;
         }
         // flagをたてる？

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
+using Windows.System;
 
 namespace saltstone
 {
@@ -32,7 +34,8 @@ namespace saltstone
 
     public static bool init()
     {
-      pSettingsdbfname = Utils.Sysinfo.getCurrentExepath();
+      
+      pSettingsdbfname = Utils.Utils.Sysinfo.getCurrentExepath();
       pSettingsdbfname += "\\" + pSettingsDB;
       DB.Sqlite sdb = new DB.Sqlite(pSettingsdbfname);
       Dictionary<string, string> replacestring = new Dictionary<string, string>(); 
@@ -58,10 +61,10 @@ namespace saltstone
           switch (pathid)
           {
             case "homedir":
-              realpath = Utils.Sysinfo.getHomedir();
+              realpath = Utils.Utils.Sysinfo.getHomedir();
               break;
             case "exedir":
-              realpath = Utils.Sysinfo.getCurrentExepath();
+              realpath = Utils.Utils.Sysinfo.getCurrentExepath();
               break;
           }
         }
@@ -96,7 +99,7 @@ namespace saltstone
             pCharadbfname = realpath;
             break;
           case "tempdir":
-            pTempdir = Utils.Files.createTempDirectory();
+            pTempdir = Utils.Utils.Files.createTempDirectory();
             break;
           case "charapicture_original":
             pCharaOriginaldir = realpath;
@@ -142,7 +145,7 @@ namespace saltstone
     public static string exeimageprocess
     {
       get {
-        return Utils.Sysinfo.getCurrentExepath() + "\\" + EXE_ImageProcess;
+        return Utils.Utils.Sysinfo.getCurrentExepath() + "\\" + EXE_ImageProcess;
       }
     }
 
@@ -151,7 +154,7 @@ namespace saltstone
       get {
         if (string.IsNullOrEmpty(pTempdir) == true)
         {
-          pTempdir = Utils.Files.createTempDirectory();
+          pTempdir = Utils.Utils.Files.createTempDirectory();
         }
         return pTempdir;
       }

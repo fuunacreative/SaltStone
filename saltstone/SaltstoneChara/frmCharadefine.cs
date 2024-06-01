@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using Utils;
 // TODO でもに向けて
 // 保存メッセージ -> json or xml export
 
@@ -45,7 +46,7 @@ namespace saltstone
 
     CheckBox dwWatch; // chara picture directory 監視用
 
-    Utils.Timer systeminfowatchtimer; // disk memory 監視タイマー
+    Timer systeminfowatchtimer; // disk memory 監視タイマー
     private bool formCloseingflag = false; // formがclose中かどうかのフラグ
 
     // libraryMessage libmessage;
@@ -65,8 +66,8 @@ namespace saltstone
       {
         return;
       }
-      Utils.MemoryInfo mem = Utils.Sysinfo.getMemoryInfo();
-      Utils.Diskinfo disk = Utils.Sysinfo.getDiskUsageInfo();
+      Util.MemoryInfo mem = Utils.Sysinfo.getMemoryInfo();
+      Util.Diskinfo disk = Utils.Sysinfo.getDiskUsageInfo();
       int diskvalue = (int)disk.usagepercent;
       int memvalue = (int)mem.usagepercent;
       // カプセル化できないか？
@@ -74,8 +75,8 @@ namespace saltstone
       {
         // TODO はきされたobject frmcharadefineにアクセスできません
         this.Invoke((MethodInvoker)(() => {
-          Utils.setProgressbarColor(this.pbDisk, diskvalue);
-          Utils.setProgressbarColor(this.pbMemory, memvalue);
+          Util.setProgressbarColor(this.pbDisk, diskvalue);
+          Util.setProgressbarColor(this.pbMemory, memvalue);
           //IntPtr h = this.pbDisk.ProgressBar.Handle;
           //Utils.win32api.SendMessage(h, Utils.win32api.WMMessage.BM_SETBARCOLOR, 3, 0);
           //this.pbDisk.Value = diskvalue;
@@ -85,8 +86,8 @@ namespace saltstone
       }
       // this.pbDisk.Value = diskvalue;
       // this.pbMemory.Value = memvalue;
-      Utils.setProgressbarColor(this.pbDisk, diskvalue);
-      Utils.setProgressbarColor(this.pbMemory,memvalue);
+      Util.setProgressbarColor(this.pbDisk, diskvalue);
+      Util.setProgressbarColor(this.pbMemory,memvalue);
     }
 
     private void frmCharadefine_Load(object sender, EventArgs e)
@@ -107,12 +108,12 @@ namespace saltstone
         return;
       }
       string dwdir = Utils.Sysinfo.getDownloaddir();
-      _downloadwatcher = new Utils.directoryWatcher(dwdir);
+      _downloadwatcher = new Util.directoryWatcher(dwdir);
       _downloadwatcher.fileextension = "*.zip|*.psd";
       _downloadwatcher.evt_filecreated += evt_downloaded;
       _downloadwatcher.start();
    }
-    private Utils.directoryWatcher _downloadwatcher;
+    private Util.directoryWatcher _downloadwatcher;
     private bool evt_downloaded(string filename)
     {
       // charasは識別子 r or mの一文字をもった立ち絵＋音声
@@ -210,7 +211,8 @@ namespace saltstone
 
 
       // ディスク容量・メモリ使用量の監視タイマー
-      systeminfowatchtimer = Utils.Timer.getTimer();
+      // TODO timerをutilsで一括管理する 
+      systeminfowatchtimer = Timer.getTimer();
       systeminfowatchtimer.evt_timer += evt_setSystemStatus;
       systeminfowatchtimer.start(5000, Utils.Timer.enum_repeatTimer.repeat);
 

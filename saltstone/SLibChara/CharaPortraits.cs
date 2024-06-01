@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.IO;
+using Utils;
 
 // 画像データの自動クリッピングができないか？
 // 特にパーツ
@@ -157,7 +158,7 @@ namespace saltstone
 
     public enum_CharapictureType getType(string fullfilename)
     {
-      string fext = Utils.Files.getextention(fullfilename).ToLower();
+      string fext = Files.getextention(fullfilename).ToLower();
       if (fext == ".zip")
       {
         return enum_CharapictureType.dir;
@@ -408,11 +409,11 @@ namespace saltstone
     
 
 
-    public static void test(out Bitmap outimg)
+    unsafe public static void test(out Bitmap outimg)
     {
       string fname = @"C:\Users\fuuna\Videos\resource\chara\れいむ\口\" + "00.bmp";
       // 以下のロジックは、クラスにまとめられたはず
-      BitmapST bi = new BitmapST(fname);
+      SLibBitmap bi = new SLibBitmap(fname);
       // bi.setBitmap(fname);
 
       // Bitmap orgb = new Bitmap(fname);
@@ -501,7 +502,8 @@ namespace saltstone
       // https://social.msdn.microsoft.com/Forums/vstudio/en-US/de9ee1c9-16d3-4422-a99f-e863041e4c1d/reading-raw-rgba-data-into-a-bitmap?forum=netfxbcl
       // strideは１ラインあたりのバイト数っぽいけどな
       // Bitmap clipimg = new Bitmap(dst.height, dst.width, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-      Bitmap clipimg = new Bitmap(dst.width, dst.height, dst.width * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, dst.data);
+      nint dstptr = (nint)dst.data;
+      Bitmap clipimg = new Bitmap(dst.width, dst.height, dst.width * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, dstptr);
       outimg = new Bitmap(dst.width, dst.height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
       // dst.dataが崩壊している
       // cloneではデータがコピーされない？
@@ -511,7 +513,9 @@ namespace saltstone
       Rectangle rect = new Rectangle(0, 0, dst.width, dst.height);
       System.Drawing.Imaging.BitmapData bmpData =
          outimg.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, outimg.PixelFormat);
-      Utils.memory.copy(dst.data, bmpData.Scan0, bmpData.Stride * dst.height);
+      // Utils.memory.copy(dst.data, bmpData.Scan0, bmpData.Stride * dst.height);
+      SLibMemory.Memory.Copy(dst.data,bmpData.Scan0, bmpData.Stride * dst.height);
+
       outimg.UnlockBits(bmpData);
 
       clipimg.Dispose();

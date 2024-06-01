@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using saltstone;
 using System.IO;
 using System.Text.RegularExpressions;
+using Utils;
 
 namespace SLibChara_Make
 {
@@ -101,7 +102,7 @@ namespace SLibChara_Make
       {
         charaids = new Dictionary<string, string>();
       }
-      string basename = Utils.Files.getfilename(dirname);
+      string basename = Files.getfilename(dirname);
       charaids[basename] = charaid;
       string buff;
       buff = dirname + "\\" + CHARDEF_Chardef;
@@ -125,7 +126,7 @@ namespace SLibChara_Make
     public static bool Makedb_dirtype(string charadirpath)
     {
       // wの中のdirectoryを検索
-      List<string> dirs = saltstone.Utils.Files.getdirectory(charadirpath);
+      List<string> dirs = Files.getdirectory(charadirpath);
       // originalが存在する zipファイルの格納場所
 
       // 全\セット.txtがある or 体\*.png or 画像ファイルがある -> 正常なdir形式 キャラ素材と判定
@@ -224,7 +225,7 @@ namespace SLibChara_Make
       bool fret;
 
       buff = basedir + "\\" + CHARDEF_Chardef; // charadef.txt
-      fret = saltstone.Utils.Files.exist(buff);
+      fret = Files.exist(buff);
       if (fret == true)
       {
         return true;
@@ -232,7 +233,7 @@ namespace SLibChara_Make
 
 
       buff = basedir + "\\" + CHARDEF_Favorite; // favorite.txt
-      fret = saltstone.Utils.Files.exist(buff);
+      fret = Files.exist(buff);
       if (fret == true)
       {
         return true;
@@ -240,7 +241,7 @@ namespace SLibChara_Make
 
       // buff = basedir + "\\全\\セット.txt";
       buff = basedir + "\\" + CHARDEF_SETDEF; // 全\セット.txt
-      fret = saltstone.Utils.Files.exist(buff);
+      fret = Files.exist(buff);
       if (fret == true)
       {
         return true;

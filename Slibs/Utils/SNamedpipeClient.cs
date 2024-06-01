@@ -6,8 +6,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace saltstone
+namespace Utils
 {
+
 
   /// <summary>
   /// 別ファイルにすると、なぜかうまく動かない、、、なぜなのか？ だからvsは嫌いなんだよなー
@@ -15,6 +16,7 @@ namespace saltstone
   /// </summary>
   public class SNamedpipeClient : IDisposable
   {
+
     public NamedPipeClientStream pNpClient;
     public string _pipename;
 
@@ -49,7 +51,11 @@ namespace saltstone
 
       // TODO 再接続しようとするとabendする
       // なぜ閉じるのか？ どこかで閉じる処理を行っている disposeはしていない
-      pNpClient.Connect();
+      if (pNpClient.IsConnected == false)
+      {
+        pNpClient.Connect();
+      }
+
 
       fret = true;
       return fret;
@@ -77,22 +83,30 @@ namespace saltstone
       {
         connect();
       }
-      // named pipeで送信する場合に、5バイト（５文字）を先頭につける
-      // TODO 受け手はjson serializerで受ける
+      // これはなし：named pipeで送信する場合に、5バイト（５文字）を先頭につける
+      // 受け手はjson serializerで受ける
       // 送り側も合わせる
       //  Logs l = JsonSerializer.Deserialize<Logs>(buff);
       // string buff = arg.DataID + arg.data;
-      using (System.IO.StreamWriter ss = new StreamWriter(pNpClient,leaveOpen: true))
-      {
-        try {
-          ss.WriteAsync(arg);
-          ss.FlushAsync();
-        } catch (Exception e)  {
-          string buff = e.Message;
-          
-        }
+      try {
+        using(StreamWriter ss = new StreamWriter(pNpClient)) 
+        {
+          ss.WriteLine(arg);
+          // _streamwriter.Flush();
+          // pNpClient.WaitForPipeDrain();
 
+        }
+      } catch (Exception e)  {
+          string buff = e.Message;
       }
+      fret = true;
+      return fret;
+
+      // 送信後、isConnectedがfalseになり、pipeがcloseされる、、、なぜか?
+
+
+      // 書き込み終了したらcloseする
+      // pNpClient.Close();
 
       //System.IO.BinaryWriter bs;
 
@@ -143,8 +157,6 @@ namespace saltstone
       //  return fret;
       //}
 
-      fret = true;
-      return fret;
     }
   }
 }

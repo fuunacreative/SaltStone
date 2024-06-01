@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utils;
 
 
 namespace saltstone
@@ -65,7 +66,7 @@ namespace saltstone
       {
         return false;
       }
-      string alltext = Utils.readAllText(setfpath);
+      string alltext = Util.readAllText(setfpath);
       // 一行ごとに処理
       // public const string table_charaset = "charaset"; // セット.txt outディレクトリ内のpngを含む
       // id , charaid(れいむ) , setnum(int 123など) , partsstr(顔00-眉04-目00-口06-体00) , filename(out/*.png)
@@ -121,7 +122,7 @@ namespace saltstone
         buff = ary[0] + "_*.png";
         // ファイル検索
         // セット番号10の場合、ファイルが10_と100_の両方がヒットする
-        files = Utils.searchfile(outdirbuff, buff);
+        files = Util.searchfile(outdirbuff, buff);
         outpng = "";
         if (files.Count > 0)
         {
@@ -205,7 +206,7 @@ namespace saltstone
       Utils.Files.rsync(portraitfilename, charportraitfile);
 
       // idはPまりさ_XESD (random 4文字) or PまりさPSD_DSX1
-      id = "P" + chardirname + "_" + Utils.SGuid.getShort();
+      id = "P" + chardirname + "_" + Util.SGuid.getShort();
 
       // TODO アニメ用のファイルをどうするか？
       // 別にテーブルが必要 親はpartsファイル これに対し、子供のアニメパーツレコードを用意 

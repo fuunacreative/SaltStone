@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Versioning;
 
-namespace saltstone
+namespace Utils
 {
   /// <summary>
   /// iniファイルを読み込み・保存するクラス

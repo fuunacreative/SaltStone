@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using Utils;
 
 
 // TODO 付属するdllも一緒にコピーしないとうまく雨後かないっぽい
@@ -59,7 +60,7 @@ namespace DB
 
     public bool init(string dbname)
     {
-      if (saltstone.Utils.Files.exist(dbname) == false)
+      if (Utils.Files.exist(dbname) == false)
       {
         // throw new Exception("db:" + dbname + "が存在しません");
         return false;
